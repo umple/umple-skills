@@ -2,16 +2,9 @@
   <img src="assets/umple_logo.svg" alt="Umple Logo" width="200">
 </div>
 
-# umple-diagram-generator
+# Skills
 
-An AI skill that generates UML diagrams from natural-language requirements.
-
-## What This Skill Does
-
-This skill helps AI agents convert textual requirements into visual UML diagrams by:
-1. Reading diagram-specific guidance from the `references/` folder
-2. Generating valid Umple code based on user requirements
-3. Running Umple CLI to produce SVG diagrams
+A collection of AI skills for working with Umple - a Model-Oriented Programming technology that allows you to create textual UML models, add UML constructs directly into your code (Java, Python, PHP, C++, Ruby), generate high-quality code from UML models, and visualize models as UML diagrams.
 
 ## Dependencies
 
@@ -26,6 +19,17 @@ This skill helps AI agents convert textual requirements into visual UML diagrams
 # Install via skills command (requires NPX)
 npx skills add elwinLiu/umple-skills
 ```
+
+## umple-diagram-generator
+
+This skill enables AI agents to generate UML diagrams (class diagrams, state machines, etc.) from natural-language requirements using Umple's textual modeling format.
+
+## What This Skill Does
+
+This skill helps AI agents convert textual requirements into visual UML diagrams by:
+1. Reading diagram-specific guidance from the `references/` folder
+2. Generating valid Umple code based on user requirements
+3. Running Umple CLI to produce SVG diagrams
 
 ## See Also
 
