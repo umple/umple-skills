@@ -1,7 +1,7 @@
 ---
 name: umple-diagram-generator
 description: "Generate UML diagrams (state machines, class diagrams) from natural language requirements using Umple. Use when user requests: (1) State machine diagrams (2) UML class diagrams (3) Diagram generation from text descriptions, (4) Any mention of Umple diagram generation, (5) Visual representation of states, transitions, events, classes, or relationships. Outputs SVG diagrams with organized folder structure."
-allowed-tools: Bash(npx -y bun:*), Bash(command -v umple:*), Bash(umple --help:*), Bash(umple:*), Bash(mktemp:*), Bash(mkdir:*), Bash(cat:*), Bash(ls:*), Bash(cp:*), Bash(command -v dot:*), Bash(dot:*), Bash(date:*)
+allowed-tools: Bash(npx -y bun:*), Bash(command -v umple:*), Bash(umple:*), Bash(mktemp:*), Bash(mkdir:*), Bash(cat:*), Bash(cp:*), Bash(command -v dot:*), Bash(dot:*), Bash(date:*)
 ---
 
 # Umple Diagram Generator Skill
@@ -162,3 +162,10 @@ On each failure:
 3. Confirm the exact command you ran.
 4. **Folder mode**: Provide the output folder path and SVG file location.
    **Exact path mode**: Provide the SVG file path.
+
+## Guardrails (do not skip)
+
+- Never invent Umple syntax: if unsure, prefer a smaller model that is valid.
+- Use **exact path mode** only when the user explicitly provides an `.svg` path; otherwise use folder mode.
+- If `umple` or `dot` is missing, stop and ask the user to install them (do not try to install system deps).
+- Keep Umple “code” inside Umple actions/guards minimal (no secrets, no real credentials, no I/O).
