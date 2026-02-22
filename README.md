@@ -41,3 +41,4 @@ This skill helps AI agents convert textual requirements into visual UML diagrams
 # Sync to agents directory
 ./sync-skills.sh
 ```
+Use the script when you're managing local skills at ~/.agents (Recommended if you're using multiple harnesses)
