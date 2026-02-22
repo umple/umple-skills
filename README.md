@@ -17,7 +17,7 @@ A collection of AI skills for working with Umple - a Model-Oriented Programming 
 
 ```bash
 # Install via skills command (requires NPX)
-npx skills add elwinLiu/umple-skills
+npx skills add umple/umple-skills
 ```
 
 ## umple-diagram-generator
