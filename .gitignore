@@ -1,21 +1,4 @@
-# OS files
-.DS_Store
-Thumbs.db
-
-# Editor/IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Python
-__pycache__/
-*.py[cod]
-*.egg-info/
-dist/
-build/
-*.egg
-
-# Logs
-*.log
+node_modules/
+results/
+generated_code/
+ai_test.ump
