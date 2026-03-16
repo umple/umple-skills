@@ -53,6 +53,7 @@ Skills call the Umple Online API using whatever HTTP tool is available in the ag
 4. Include sample commands/output when behavior changes.
 5. Update docs (`README.md`, `SKILL.md`, references) for user-facing changes.
 6. Test API calls against the Umple Online endpoint before submitting.
+7. **Do not commit zip files.** Skill zips are built automatically by CI and attached to GitHub Releases. Use `./build-zips.sh` for local testing only.
 
 ## Review expectations
 
