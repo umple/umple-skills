@@ -2,43 +2,81 @@
   <img src="assets/umple_logo.svg" alt="Umple Logo" width="200">
 </div>
 
-# Skills
+# Umple Skills
 
-A collection of AI skills for working with Umple - a Model-Oriented Programming technology that allows you to create textual UML models, add UML constructs directly into your code (Java, Python, PHP, C++, Ruby), generate high-quality code from UML models, and visualize models as UML diagrams.
+AI skills for [Umple](https://www.umple.org) — generate UML diagrams and production-quality code from natural language, powered by the Umple Online API. No local dependencies required.
 
-## Dependencies
+## Skills
 
-- **Umple CLI**: Diagram generation engine
-- **Graphviz**: SVG conversion
-- **Bun**: TypeScript runtime
-- **npx**: Package executor for running the skill installer
+### Diagram Generator
 
-## Installation
+Describe what you want in plain English and get a clean SVG diagram back.
+
+**Supported diagram types:**
+- **Class diagrams** — classes, attributes, associations, inheritance, interfaces
+- **State machine diagrams** — states, transitions, guards, actions, nested states, concurrent regions
+- **ER diagrams** — entity-relationship diagrams for database modeling
+- **Trait diagrams** — reusable trait definitions
+
+**Example prompt:**
+> Draw a class diagram for a university system with Students, Courses, and Professors. Students enroll in multiple courses, and each course has one professor.
+
+### Code Generator
+
+Describe your domain model and get complete, working code in your target language.
+
+**Supported languages:**
+- Java (full-featured, default)
+- Python
+- PHP
+- Ruby
+- C++ (real-time)
+- SQL (CREATE TABLE DDL)
+
+Generated code includes constructors, getters/setters, association management methods, and state machine logic — no boilerplate to write.
+
+**Example prompt:**
+> Generate Java classes for a library system with Books, Members, and Loans. Members can borrow up to 5 books. Each loan tracks the borrow date and due date.
+
+## Using with Claude
+
+### Claude chatbot (claude.ai / Claude Desktop)
+
+1. Download the skill zip files from the [**Releases page**](https://github.com/umple/umple-skills/releases/latest)
+2. In Claude, go to **Settings > Capabilities > Skills**
+3. Click **"+"** → **"Upload a skill"**
+4. Upload the `.zip` file for each skill
+
+Once uploaded, Claude will automatically use the skills when you ask for diagrams or code generation.
+
+### Claude Code (CLI)
 
 ```bash
-# Install via skills command (requires NPX)
 npx skills add umple/umple-skills
 ```
 
-## umple-diagram-generator
+The skills will be available as `/umple-diagram-generator` and `/umple-code-generator`.
 
-This skill enables AI agents to generate UML diagrams (class diagrams, state machines, etc.) from natural-language requirements using Umple's textual modeling format.
+## How it works
 
-## What This Skill Does
+Both skills use the [Umple Online API](https://cruise.umple.org/umpleonline/) — no local tooling required. Each skill is self-contained:
 
-This skill helps AI agents convert textual requirements into visual UML diagrams by:
-1. Reading diagram-specific guidance from the `references/` folder
-2. Generating valid Umple code based on user requirements
-3. Running Umple CLI to produce SVG diagrams
+```
+<skill>/
+├── SKILL.md         # Workflow — when and how to use the skill
+└── references/      # Domain knowledge — Umple syntax and patterns
+```
 
-## See Also
-
-- `SKILL.md` for detailed agent instructions
-- `references/` for domain-specific guidance
-- Other skills in the umple-skills repository
+## Local development
 
 ```bash
-# Sync to agents directory
-./sync-skills.sh
+git clone https://github.com/umple/umple-skills.git
+cd umple-skills
+./sync-skills.sh    # Sync skills to ~/.agents/skills
 ```
-Use the script when you're managing local skills at ~/.agents (Recommended if you're using multiple harnesses)
+
+To build the zip files locally:
+
+```bash
+./build-zips.sh     # Outputs to dist/
+```
