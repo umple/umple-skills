@@ -29,7 +29,10 @@ umple-skills/
 ├── umple-diagram-generator/
 │   ├── SKILL.md
 │   └── references/
-└── umple-code-generator/
+├── umple-code-generator/
+│   ├── SKILL.md
+│   └── references/
+└── umple-requirements-tracer/
     ├── SKILL.md
     └── references/
 ```

@@ -4,7 +4,7 @@
 
 # Umple Skills
 
-AI skills for [Umple](https://www.umple.org) — generate UML diagrams and production-quality code from natural language, powered by the Umple Online API. No local dependencies required.
+AI skills for [Umple](https://www.umple.org) — generate UML diagrams, production-quality code, and requirement-to-model traceability from natural language, powered by the Umple Online API. No local dependencies required.
 
 ## Skills
 
@@ -38,6 +38,17 @@ Generated code includes constructors, getters/setters, association management me
 **Example prompt:**
 > Generate Java classes for a library system with Books, Members, and Loans. Members can borrow up to 5 books. Each loan tracks the borrow date and due date.
 
+### Requirements Tracer
+
+Turn labelled requirements into an Umple model tagged with `req` / `implementsReq`, or add those tags to an existing model. Compiles through the Umple Online API and can emit a Plain Requirements Doc to show what implements what.
+
+**When it tags:**
+- Small labelled requirements (IDs like `R01`, `REQ-101`, or a short numbered list) → **must** use `implementsReq`
+- A massive unlabelled requirements dump → generate the model only, **do not** invent `implementsReq` mappings
+
+**Example prompt:**
+> Turn these into an Umple model and tag each feature: req R01 { A member has a name. } req R02 { A book has a title and ISBN. } req R03 { Members borrow many books. }
+
 ## Using with Claude
 
 ### Claude chatbot (claude.ai / Claude Desktop)
@@ -55,11 +66,11 @@ Once uploaded, Claude will automatically use the skills when you ask for diagram
 npx skills add umple/umple-skills
 ```
 
-The skills will be available as `/umple-diagram-generator` and `/umple-code-generator`.
+The skills will be available as `/umple-diagram-generator`, `/umple-code-generator`, and `/umple-requirements-tracer`.
 
 ## How it works
 
-Both skills use the [Umple Online API](https://cruise.umple.org/umpleonline/) — no local tooling required. Each skill is self-contained:
+All skills use the [Umple Online API](https://cruise.umple.org/umpleonline/) — no local tooling required. Each skill is self-contained:
 
 ```
 <skill>/
