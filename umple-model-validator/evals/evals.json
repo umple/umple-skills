@@ -1,0 +1,33 @@
+{
+  "skill_name": "umple-model-validator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Validate this Umple. It declares the same association on both classes:\nclass A { * -- * B; }\nclass B { * -- * A; }",
+      "expected_output": "Report the duplicate association as an error or best-practice failure; do not call the model clean.",
+      "expectations": [
+        "The agent identifies that A–B is associated twice",
+        "The API was called with language=Java and languageStyle=codegen, or the report cites the one-association-per-pair rule",
+        "The model is not reported as clean / best-practice compliant"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Validate: req R01 { name } implementsReq R99; class Person { String name; }",
+      "expected_output": "Missing-requirement warning for R99 is treated as a failure.",
+      "expectations": [
+        "The report mentions R99 or 'Cannot find specified requ'",
+        "implementsReq R99 is not treated as valid"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Validate this clean model and confirm it compiles:\nclass Person { String name; }",
+      "expected_output": "Compile succeeds; no errors.",
+      "expectations": [
+        "The API response does not contain umple-message-error",
+        "The report says the model compiles or is valid"
+      ]
+    }
+  ]
+}

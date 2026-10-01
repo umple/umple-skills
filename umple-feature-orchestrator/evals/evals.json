@@ -1,0 +1,27 @@
+{
+  "skill_name": "umple-feature-orchestrator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "From these labelled reqs, produce a tagged Umple model and Java code.\nreq R01 { A person has a name. }",
+      "expected_output": "Uses requirements-tracer then code-generator: req/implementsReq plus a Java API call.",
+      "expectations": [
+        "The agent reads or follows umple-requirements-tracer",
+        "The Umple source contains req R01 and implementsReq",
+        "The API is called with language=Java at least once",
+        "The API response does not contain umple-message-error"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Draw a state model of a door Open/Closed, then add a main that toggles it.",
+      "expected_output": "Diagram (or state Umple) plus a main that fires events.",
+      "expectations": [
+        "The agent treats 'state model' as a state machine (diagram-generator or equivalent)",
+        "The Umple source contains Open and Closed states",
+        "A main method is generated",
+        "The API response does not contain umple-message-error"
+      ]
+    }
+  ]
+}
