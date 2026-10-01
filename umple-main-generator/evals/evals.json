@@ -3,24 +3,116 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Add a Java main that constructs a Person with a name and prints it.\nclass Person { String name; }",
-      "expected_output": "Umple with public static void main and new Person(...).",
+      "prompt": "Add a Java main that constructs a Person with a name and prints it.\n\nclass Person { String name; }",
+      "expected_output": "Umple with public static void main, new Person(...), compiles.",
       "expectations": [
         "The Umple source contains 'public static void main'",
-        "The main body is tagged Java { or Java{",
-        "The main constructs a Person",
+        "The main body is tagged with Java",
+        "The main constructs a Person with a name argument",
         "The API was called with language=Java",
-        "The API response does not contain umple-message-error"
+        "String [ ] args or String[] args appears in the main signature",
+        "A model.ump (or equivalent) was saved or shown"
       ]
     },
     {
       "id": 2,
-      "prompt": "Generate a main that turns a Light off then on.\nclass Light { sm { On { off -> Off; } Off { on -> On; } } }",
+      "prompt": "Generate a main that turns a Light off then on.\n\nclass Light {\n  sm {\n    On { off -> Off; }\n    Off { on -> On; }\n  }\n}",
       "expected_output": "Main calls off() and on() (or equivalent event methods).",
       "expectations": [
         "The Umple source contains a main method",
         "The main invokes the off event and the on event",
-        "The API response does not contain umple-message-error"
+        "The Light state machine is preserved",
+        "The API was called with language=Java",
+        "No state named Final was introduced"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Create a Demo main that links a Member and a Book (many-to-many).\n\nclass Member { String name; }\nclass Book { String title; * -- * Member; }",
+      "expected_output": "Main constructs Member and Book and calls an add* association method.",
+      "expectations": [
+        "The Umple source contains public static void main",
+        "new Member and new Book (or equivalent) appear in main",
+        "An association mutator such as addMember or addBook is called",
+        "The many-to-many association is defined only once",
+        "The API was called with language=Java"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Give me a Hello World Umple class with both Java and Python mains.",
+      "expected_output": "HelloWorld (or similar) with Java and Python main bodies.",
+      "expectations": [
+        "There is a Java-tagged main body",
+        "There is a Python-tagged main body",
+        "Both print a hello-style message",
+        "The Umple source contains public static void main"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Put main on a separate Demo class, not on Person.\n\nclass Person { String name; }",
+      "expected_output": "class Demo (or App) holds main; Person has no main.",
+      "expectations": [
+        "A driver class such as Demo or App contains main",
+        "class Person does not contain main",
+        "Demo constructs a Person",
+        "The API was called with language=Java"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Person has immutable String id and String name. Write a main that creates one Person.",
+      "expected_output": "Constructor gets id and name; no setId call.",
+      "expectations": [
+        "Person uses immutable id (or equivalent)",
+        "main uses new Person with id and name",
+        "main does not call setId",
+        "The API was called with language=Java"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Generate a short main that walks a Door state machine: Open and Closed, events open and close.",
+      "expected_output": "Door sm + main firing open/close; no Final state name.",
+      "expectations": [
+        "Umple contains a Door class with a state machine",
+        "States include Open and Closed (or equivalent, not Final)",
+        "main fires open and close events",
+        "The API was called with language=Java"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Add a main. If the first compile fails, fix it (max 3 retries).",
+      "expected_output": "Agent compiles, retries at most 3 times on failure, then stops if still failing.",
+      "expectations": [
+        "The API was called at least once",
+        "On compile failure the agent attempts a fix or stops with the message",
+        "The agent does not retry more than 3 times after failures",
+        "Final Umple is shown to the user"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "class Counter { Integer value = 0; } — write a main that constructs Counter and prints it.",
+      "expected_output": "Main constructs Counter; respects default/constructor rules.",
+      "expectations": [
+        "public static void main is present",
+        "new Counter appears (with or without args depending on generated ctor)",
+        "Something is printed or the object is used",
+        "The API was called with language=Java"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Do not invent a method named runDemo(). Only use generated Umple APIs in main for:\n\nclass Account { String owner; }",
+      "expected_output": "Main only uses constructor / getters / toString / setOwner — no runDemo.",
+      "expectations": [
+        "main does not call runDemo",
+        "main uses new Account or equivalent generated API",
+        "public static void main is present",
+        "The API was called with language=Java"
       ]
     }
   ]

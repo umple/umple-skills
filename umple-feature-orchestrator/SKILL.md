@@ -1,46 +1,65 @@
 ---
 name: umple-feature-orchestrator
-description: "Coordinate Umple skills so the agent can use the full language (classes, states, reqs, mixsets, mains, validation, codegen). Use when the user wants: (1) A complete Umple system using several features (2) Skills calling skills / an end-to-end Umple workflow (3) Something that does not fit a single diagram, code, req, main, mixset, or validate skill. Read the matching sibling SKILL.md files and run their workflows in order."
+description: "Coordinate Umple skills so the agent can use the full language (classes, states, reqs, mixsets, mains, validation, codegen, diagrams). Use when the user wants: (1) A complete Umple system using several features (2) Skills calling skills / end-to-end Umple workflow (3) Something that spans diagram + code + requirements + main + mixsets (4) 'Use all Umple features' style requests. Read sibling SKILL.md files and run their workflows in order; always finish with a compile."
 ---
 
 # Umple Feature Orchestrator
 
-This skill does **not** replace the others. It **routes** to them.
+This skill does **not** replace the others. It **routes** to them and sequences their workflows.
 
-## Sibling skills (read the file when the step matches)
+## Sibling skills (load when the step matches)
+
+Resolve paths relative to this skill directory first (`../<name>/SKILL.md`). If missing, try `~/.agents/skills/<name>/SKILL.md`.
 
 | User need | Load |
 | --------- | ---- |
-| Class / data / ER / state **diagram** | `../umple-diagram-generator/SKILL.md` |
+| Class / data / ER / state / trait **diagram** or SVG | `../umple-diagram-generator/SKILL.md` |
 | Java / Python / PHP / Ruby / C++ / SQL / JSON **code** | `../umple-code-generator/SKILL.md` |
-| `req` / `implementsReq` | `../umple-requirements-tracer/SKILL.md` |
+| `req` / `implementsReq` / labelled requirements | `../umple-requirements-tracer/SKILL.md` |
 | Lint / compile errors / best practices | `../umple-model-validator/SKILL.md` |
 | Example `main` / instantiate / fire events | `../umple-main-generator/SKILL.md` |
 | Mixsets, mixins, multiple `.ump` files | `../umple-mixset-builder/SKILL.md` |
 
-If those relative paths are missing, look under `~/.agents/skills/<name>/SKILL.md`.
+Also read `references/skill-map.md` for a one-page map.
+
+## Decision rules
+
+1. **Single clear need** → call only that sibling skill.
+2. **Labelled requirements + model** → requirements-tracer (do **not** invent tags on a massive unlabelled dump).
+3. **Diagram wording** ("state model", "data model", "FSM") → diagram-generator.
+4. **Runnable demo** → after the model exists, main-generator.
+5. **Optional features / product line** → mixset-builder, then validator.
+6. **Generate Java/Python/…** → code-generator last (or after validate).
+7. Always **validate/compile** before claiming success (validator skill or the compile step inside the sibling).
 
 ## Typical pipelines
 
-**Diagram from English:** diagram-generator.
+| Goal | Order |
+| ---- | ----- |
+| Diagram from English | diagram-generator |
+| Labelled reqs → tagged model → Java | requirements-tracer → code-generator |
+| Model + demo main | diagram or tracer → main-generator → validator |
+| Product line | mixset-builder → validator → code-generator |
+| Broken model | validator (fix) → re-run domain skill |
+| "Full" teaching example | tracer or diagram → mixset (optional) → main → code → validator |
 
-**Labelled requirements → tagged model → Java:** requirements-tracer, then code-generator.
+## Other Umple features to include when the domain needs them
 
-**Model + demo main:** diagram or tracer, then main-generator, then validator.
-
-**Product line:** mixset-builder, then validator, then code-generator.
-
-## Other Umple features the agent should still use
-
-When the domain needs them, add (from `umple-code-generator/references/umple-modeling-syntax.md`):
+Pull syntax from `../umple-code-generator/references/umple-modeling-syntax.md` when present:
 
 - `isA` inheritance, interfaces, traits
 - Keys, singleton, immutable, constraints
-- Nested / concurrent state machines, `after(` timers
+- Nested / concurrent state machines, `after(` / `afterEvery(`
 - Enums, association classes, composition `<@>-`
 
 Keep models small. One association per class pair. No state named `Final`.
 
 ## Compile
 
-Always finish by compiling through `compiler.php` (`language=Java` unless the user asked another target). Retry up to 3 times, then stop.
+Finish through `https://cruise.umple.org/umpleonline/scripts/compiler.php` (`language=Java` unless the user asked another target). Unique `filename`. Retry up to 3 times, then stop and show the error.
+
+## Output
+
+1. Name which sibling skills you used and why.
+2. Show final Umple (and generated artifacts if any).
+3. Report compile / PlainRequirementsDoc results briefly.
