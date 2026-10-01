@@ -6,20 +6,110 @@
       "prompt": "Create a Member class with name always on, and an optional email attribute in a mixset Premium that is activated.",
       "expected_output": "mixset Premium plus use Premium; Member has name and email when compiled.",
       "expectations": [
-        "The Umple source contains 'mixset Premium' or an equivalent mixset name",
-        "The Umple source contains 'use ' for that mixset",
-        "Member (or equivalent) has a name attribute outside the mixset",
-        "email (or equivalent) is inside the mixset",
-        "The API response does not contain umple-message-error"
+        "The Umple source contains mixset Premium (or clearly named equivalent)",
+        "The Umple source contains use Premium (or use of that mixset)",
+        "name is outside the optional mixset / in core",
+        "email is inside the mixset",
+        "The API was called with language=Java"
       ]
     },
     {
       "id": 2,
-      "prompt": "Split Person into two mixin fragments (two class Person blocks) in the same model and compile.",
-      "expected_output": "Two class Person { } blocks that merge.",
+      "prompt": "Split Person into two mixin fragments (two class Person blocks) and compile.",
+      "expected_output": "Two class Person { } blocks that merge, or two files that mixin Person.",
       "expectations": [
-        "The Umple source contains 'class Person' more than once, or is saved as more than one .ump file that mix in Person",
-        "The API response does not contain umple-message-error"
+        "class Person appears more than once OR is split across multiple saved .ump files",
+        "The fragments add different members (e.g. name vs email)",
+        "The API was called with language=Java",
+        "No duplicate association errors introduced"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Define mixset Logging but do NOT activate it. Core class Service { String name; }.",
+      "expected_output": "Logging mixset present; no use Logging; agent says feature is off.",
+      "expectations": [
+        "mixset Logging (or equivalent) exists",
+        "There is no activating use Logging statement",
+        "The agent states the mixset is inactive / not included",
+        "Core Service (or equivalent) remains"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Build a tiny product line: core Library with name; mixset BranchFeature adds Branch class and Library--Branch; activate it in app.ump style.",
+      "expected_output": "core + mixset + use; association only once.",
+      "expectations": [
+        "A core Library (or equivalent) exists outside the mixset",
+        "Branch (or equivalent) is introduced in a mixset",
+        "use activates that mixset",
+        "Library–Branch association is not duplicated from both sides",
+        "The API was called with language=Java"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Show use !Premium after use Premium so the optional email is cancelled.",
+      "expected_output": "Both use Premium and use !Premium appear; agent explains cancellation.",
+      "expectations": [
+        "The source contains use Premium and use !Premium (or equivalent cancel)",
+        "The agent explains that ! cancels the mixset",
+        "Member core attributes still exist"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Save multiple files on disk (core.ump, feature.ump, app.ump) even though the API gets one combined string.",
+      "expected_output": "At least two files saved; combined compile attempted.",
+      "expectations": [
+        "More than one .ump file was written for the user",
+        "A top-level file uses or documents the others",
+        "A combined payload was compiled via the API",
+        "The API language was Java"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Put an optional state HalfOpen into a mixset on a Door state machine that is Closed/Opening/Open.",
+      "expected_output": "Base SM valid; HalfOpen in mixset; use activates.",
+      "expectations": [
+        "A Door (or equivalent) state machine exists",
+        "HalfOpen (or optional state) is inside a mixset",
+        "use activates that mixset when the user wants the feature on",
+        "No state named Final"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Two fragments of the same mixset Extra both add fields to class Item. Activate Extra.",
+      "expected_output": "Two mixset Extra blocks + use Extra.",
+      "expectations": [
+        "mixset Extra appears more than once (two fragments)",
+        "use Extra is present",
+        "class Item gains members from the fragments",
+        "The API was called with language=Java"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Do not invent a third unpaid feature. Only core + one mixset called Analytics.",
+      "expected_output": "Exactly one mixset Analytics (plus core); no extra product-line features.",
+      "expectations": [
+        "Exactly one mixset named Analytics (or only that optional feature)",
+        "No unrelated mixsets invented",
+        "Core model exists",
+        "use Analytics only if the user wanted it on"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Inline mixset inside class Cart that optionally adds discountCode; activate it.",
+      "expected_output": "class Cart { mixset ... { discountCode; } } plus use.",
+      "expectations": [
+        "An inline mixset appears inside class Cart (or equivalent)",
+        "discountCode (or equivalent) is inside that mixset",
+        "use activates the mixset",
+        "The API was called with language=Java"
       ]
     }
   ]

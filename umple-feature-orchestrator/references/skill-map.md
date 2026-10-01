@@ -1,9 +1,59 @@
-# Skill map
+# Umple skills map (orchestrator)
 
-1. **umple-diagram-generator** — SVG + Umple for class, state, ER, trait diagrams. Synonyms: data model, state model, FSM.
-2. **umple-code-generator** — Umple → Java / Python / Php / Ruby / RTCpp / Sql / Json.
-3. **umple-requirements-tracer** — labelled `req` + `implementsReq`; no invented tags on huge unlabelled dumps.
-4. **umple-model-validator** — compile + best-practice report.
-5. **umple-main-generator** — `public static void main(String [ ] args) Java { ... }`.
-6. **umple-mixset-builder** — mixsets, mixins, `use`, multiple files.
-7. **umple-feature-orchestrator** — this file; call the others in sequence.
+## Catalog
+
+| Skill | One-liner |
+| ----- | --------- |
+| **umple-diagram-generator** | Natural language → Umple + SVG (class, state/FSM/"state model", ER, trait). |
+| **umple-code-generator** | Umple or NL → Java / Python / Php / Ruby / RTCpp / Sql / Json. |
+| **umple-requirements-tracer** | Labelled `req` + `implementsReq`; **no** invented tags on huge unlabelled dumps. |
+| **umple-model-validator** | Compile + best-practice report; fix loop (max 3). |
+| **umple-main-generator** | Add `public static void main(String [ ] args) Java { ... }` to demo objects/events. |
+| **umple-mixset-builder** | Mixins, `mixset` / `use` / `use !`, multiple `.ump` files. |
+| **umple-feature-orchestrator** | This skill — sequences the above. |
+
+## Synonym routing
+
+| User says | Route to |
+| --------- | -------- |
+| state model, FSM, statechart, lifecycle diagram | diagram-generator (`stateDiagram`) |
+| data model, domain model, class diagram | diagram-generator (`classDiagram`) |
+| ERD, entity relationship | diagram-generator (`entityRelationshipDiagram`) |
+| implement requirements, implementsReq, traceability | requirements-tracer |
+| lint, why won't it compile, best practices | model-validator |
+| main, driver, demo, instantiate, fire events | main-generator |
+| feature flag, product line, optional feature, mixset | mixset-builder |
+| generate Java/Python/… | code-generator |
+
+## Tim's requirements rule (never violate)
+
+- **Small labelled requirements** → must emit `req` + `implementsReq`.
+- **Massive unlabelled dump** → model only; **do not** invent `implementsReq` mappings.
+
+## Pipeline sketches
+
+```
+NL diagram request
+  → diagram-generator
+  → (optional) main-generator
+  → validator
+
+Labelled req list
+  → requirements-tracer
+  → (optional) main-generator
+  → code-generator
+  → validator / PlainRequirementsDoc
+
+Product line
+  → mixset-builder
+  → validator
+  → code-generator
+```
+
+## Quality bar
+
+- Prefer smaller correct models.
+- One association per class pair.
+- Never name a state `Final`.
+- Unique API `filename` when calling UmpleOnline.
+- After 3 compile failures: stop and show the message.

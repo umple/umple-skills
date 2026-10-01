@@ -1,6 +1,6 @@
 ---
 name: umple-model-validator
-description: "Validate Umple models against compiler rules and Umple best practices. Use when the user requests: (1) Check / lint / review an Umple model (2) Why an .ump file does not compile (3) Best-practice review of associations, state machines, mixsets, or implementsReq (4) Fix Umple warnings. Compiles via the Umple Online API and reports concrete issues with suggested fixes."
+description: "Validate Umple models against the compiler and Umple best practices. Use when the user requests: (1) Check / lint / review / validate an Umple .ump model (2) Why Umple code does not compile (3) Best-practice review of associations, state machines, mixsets, or implementsReq (4) Fix Umple errors or warnings (5) Catch duplicate associations, missing req IDs, reserved Final state names. Compiles via the Umple Online API and returns a concrete issue report with fixes."
 ---
 
 # Umple Model Validator
@@ -8,33 +8,53 @@ description: "Validate Umple models against compiler rules and Umple best practi
 ## Workflow
 
 1. Read `references/best-practices.md`.
-2. Take the user's `.ump` (or write a minimal model if they only described a problem).
-3. Compile with the Umple Online API (`language=Java`, `languageStyle=codegen`).
-4. Treat `umple-message-error` **and** missing-requirement warnings as failures.
-5. Also flag best-practice issues that still compile (duplicate associations, `Final` as a state name, reflexive association without a role name, invented `implementsReq` IDs, etc.).
-6. On compile failure: explain the message, propose a fix, retry (up to 3 times) if the user asked you to fix it.
-7. After 3 failures: stop, show the last source and the exact compiler text.
-8. Output a short report: errors, warnings, best-practice notes, and (if fixed) the corrected `model.ump`.
+2. Obtain the Umple source (pasted, from a file, or a minimal repro if the user only described the bug).
+3. Call the Umple Online API with `language=Java` and `languageStyle=codegen`. Prefer a **unique** `filename` (e.g. `check-<shortid>.ump`) so server temp files do not collide.
+4. Classify every compiler signal:
+   - `umple-message-error` → error
+   - `umple-message-warning` with `Cannot find specified requ` → treat as **failure** (bad `implementsReq`)
+   - Server text like `Not able to open file` / `permission denied` while writing `.java` → **server write issue**, not a model bug; still check whether `URL_SPLIT` / class bodies appeared
+5. Independently scan the source against best practices (even if it compiles): duplicate associations, `Final` state name, reflexive association without role name, mixset never `use`d, `implementsReq` with no matching `req`, etc.
+6. If the user asked you to **fix**: apply the smallest change, recompile, retry up to 3 times. After 3 failures: stop, show last source + exact message.
+7. Output a short report (see below) and save `model.ump` if you fixed anything.
 
 ## API
 
 **Endpoint:** `POST https://cruise.umple.org/umpleonline/scripts/compiler.php`
 **Content-Type:** `application/x-www-form-urlencoded`
 
-| Parameter       | Value           |
-| --------------- | --------------- |
-| `language`      | `Java`          |
-| `languageStyle` | `codegen`       |
-| `umpleCode`     | The Umple source|
-| `filename`      | `model.ump`     |
+| Parameter       | Value                |
+| --------------- | -------------------- |
+| `language`      | `Java` (default)     |
+| `languageStyle` | `codegen`            |
+| `umpleCode`     | The Umple source     |
+| `filename`      | unique `*.ump` name  |
 
-Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.).
+Optional second call: `language=PlainRequirementsDoc` when checking `req` / `implementsReq` traceability.
 
-**Failure:** `<span class="umple-message-error">`. Missing req IDs often appear as `umple-message-warning` (`Cannot find specified requ...`).
+Use WebFetch, curl, or fetch.
+
+### Response parsing
+
+- **Error:** `<span class="umple-message-error">` — strip tags.
+- **Warning:** `<span class="umple-message-warning">` — strip tags; do not ignore missing-req warnings.
+- **Success path:** content after `URL_SPLIT`; decode `&lt;` `&gt;` `&amp;` `&quot;`.
+- **Server write failure:** message contains `Not able to open file` or `permission denied` on generated `.java` — report separately from model errors.
+
+## Report format
+
+```
+Status: FAIL | PASS_WITH_NOTES | PASS
+Compiler: <errors/warnings or "none">
+Best practices: <list or "none">
+Server: <write issues or "ok">
+Suggested fix: <umple snippet if any>
+```
 
 ## Guardrails
 
 - Prefer a smaller valid model over guessing syntax.
-- One association per class pair.
+- One association per class pair — never define the same pair from both sides.
 - Do not invent requirement IDs when reviewing `implementsReq`.
-- Never use `Final` as a custom state name.
+- Never use `Final` as a custom state name; never name a state machine `Timer`.
+- After 3 failed fix attempts, stop and ask the user.

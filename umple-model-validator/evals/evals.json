@@ -3,30 +3,107 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Validate this Umple. It declares the same association on both classes:\nclass A { * -- * B; }\nclass B { * -- * A; }",
-      "expected_output": "Report the duplicate association as an error or best-practice failure; do not call the model clean.",
+      "prompt": "Validate this Umple. It declares the same association from both sides:\n\nclass A { * -- * B; }\nclass B { * -- * A; }",
+      "expected_output": "Report duplicate A–B association as an error or best-practice failure; do not mark the model clean.",
       "expectations": [
-        "The agent identifies that A–B is associated twice",
-        "The API was called with language=Java and languageStyle=codegen, or the report cites the one-association-per-pair rule",
-        "The model is not reported as clean / best-practice compliant"
+        "The agent identifies that A and B are associated twice (one association per class pair rule)",
+        "The model is not reported as fully clean / best-practice compliant",
+        "The API was called with language=Java and languageStyle=codegen, or the report cites the compiler/one-association rule",
+        "A suggested fix keeps only one association declaration"
       ]
     },
     {
       "id": 2,
-      "prompt": "Validate: req R01 { name } implementsReq R99; class Person { String name; }",
+      "prompt": "Validate:\n\nreq R01 { A person has a name. }\nimplementsReq R99;\nclass Person { String name; }",
       "expected_output": "Missing-requirement warning for R99 is treated as a failure.",
       "expectations": [
         "The report mentions R99 or 'Cannot find specified requ'",
-        "implementsReq R99 is not treated as valid"
+        "implementsReq R99 is not treated as valid",
+        "Status is FAIL or equivalent, not PASS",
+        "A suggested fix uses implementsReq R01 (or removes the bad tag)"
       ]
     },
     {
       "id": 3,
-      "prompt": "Validate this clean model and confirm it compiles:\nclass Person { String name; }",
-      "expected_output": "Compile succeeds; no errors.",
+      "prompt": "Validate this clean model and confirm it compiles:\n\nclass Person { String name; }",
+      "expected_output": "PASS (or PASS_WITH_NOTES only for server write noise); no model errors.",
       "expectations": [
-        "The API response does not contain umple-message-error",
-        "The report says the model compiles or is valid"
+        "The API was called with language=Java",
+        "No model-level umple-message-error is treated as a model failure",
+        "The report does not invent fake association or req problems",
+        "Status indicates the model is valid or compiles"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Validate this state machine. The state is named Final:\n\nclass Door {\n  sm {\n    Open { close -> Final; }\n    Final { open -> Open; }\n  }\n}",
+      "expected_output": "Flag Final as a reserved state name; suggest Done/Closed/etc.",
+      "expectations": [
+        "The report mentions that Final is reserved or invalid as a custom state name",
+        "A suggested rename is offered (e.g. Done, Closed, Completed)",
+        "The model is not marked clean without notes"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Validate this reflexive association with no role name:\n\nclass Employee {\n  * -- 0..1 Employee;\n}",
+      "expected_output": "Flag missing role name / self on reflexive association.",
+      "expectations": [
+        "The report identifies a reflexive association problem",
+        "The suggestion includes a role name (e.g. manager) or the self keyword",
+        "Status is not a silent PASS"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Validate. There is a mixset that is never used:\n\nclass Member { String name; }\nmixset Premium { class Member { String email; } }\n// no use statement",
+      "expected_output": "SHOULD note that Premium is inactive / dead without use Premium;",
+      "expectations": [
+        "The report mentions the unused mixset Premium (or missing use)",
+        "The agent does not claim email is always part of the model",
+        "Compiler may still succeed; unused mixset is a best-practice note"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "I have req R01 and implementsReq R01 on class Library. Validate and also produce a Plain Requirements Doc check.\n\nreq R01 { A library has a name. }\nimplementsReq R01;\nclass Library { String name; }",
+      "expected_output": "Compile/validate OK; PlainRequirementsDoc shows R01 IMPLEMENTED BY Library.",
+      "expectations": [
+        "The API was called with language=Java (or equivalent compile)",
+        "The API was also called with language=PlainRequirementsDoc",
+        "The PlainRequirementsDoc result mentions R01 and Library / IMPLEMENTED BY",
+        "No missing-requirement warning"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Fix this model for me after validation:\n\nclass Car { * -- * Wheel; }\nclass Wheel { * -- * Car; }",
+      "expected_output": "After retry, only one Car–Wheel association remains; recompiled.",
+      "expectations": [
+        "The agent attempted a fix, not only a report",
+        "The fixed Umple defines the Car–Wheel association at most once",
+        "A compile/API check was run after the fix",
+        "Retries did not exceed 3"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "The compiler returned 'Not able to open file ... Person.java permission denied' while validating a simple Person class. Explain whether my Umple is wrong.",
+      "expected_output": "Identify server write failure as separate from model validity.",
+      "expectations": [
+        "The agent distinguishes server write/permission issues from Umple model errors",
+        "The agent does not claim the Person model is invalid solely because of permission denied",
+        "Guidance mentions retry or unique filename / server issue"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Validate:\n\nimplementsReq R01;\nclass Thing { String id; }\n// no req block at all",
+      "expected_output": "FAIL due to implementsReq without req R01.",
+      "expectations": [
+        "Missing req R01 is reported",
+        "Status is FAIL",
+        "Suggested fix adds req R01 { ... } or removes implementsReq"
       ]
     }
   ]
