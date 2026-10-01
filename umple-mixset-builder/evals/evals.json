@@ -1,0 +1,26 @@
+{
+  "skill_name": "umple-mixset-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Create a Member class with name always on, and an optional email attribute in a mixset Premium that is activated.",
+      "expected_output": "mixset Premium plus use Premium; Member has name and email when compiled.",
+      "expectations": [
+        "The Umple source contains 'mixset Premium' or an equivalent mixset name",
+        "The Umple source contains 'use ' for that mixset",
+        "Member (or equivalent) has a name attribute outside the mixset",
+        "email (or equivalent) is inside the mixset",
+        "The API response does not contain umple-message-error"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Split Person into two mixin fragments (two class Person blocks) in the same model and compile.",
+      "expected_output": "Two class Person { } blocks that merge.",
+      "expectations": [
+        "The Umple source contains 'class Person' more than once, or is saved as more than one .ump file that mix in Person",
+        "The API response does not contain umple-message-error"
+      ]
+    }
+  ]
+}

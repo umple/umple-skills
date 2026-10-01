@@ -1,0 +1,27 @@
+{
+  "skill_name": "umple-main-generator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add a Java main that constructs a Person with a name and prints it.\nclass Person { String name; }",
+      "expected_output": "Umple with public static void main and new Person(...).",
+      "expectations": [
+        "The Umple source contains 'public static void main'",
+        "The main body is tagged Java { or Java{",
+        "The main constructs a Person",
+        "The API was called with language=Java",
+        "The API response does not contain umple-message-error"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Generate a main that turns a Light off then on.\nclass Light { sm { On { off -> Off; } Off { on -> On; } } }",
+      "expected_output": "Main calls off() and on() (or equivalent event methods).",
+      "expectations": [
+        "The Umple source contains a main method",
+        "The main invokes the off event and the on event",
+        "The API response does not contain umple-message-error"
+      ]
+    }
+  ]
+}

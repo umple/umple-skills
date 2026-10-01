@@ -4,7 +4,7 @@
 
 # Umple Skills
 
-AI skills for [Umple](https://www.umple.org) — generate UML diagrams, production-quality code, and requirement-to-model traceability from natural language, powered by the Umple Online API. No local dependencies required.
+AI skills for [Umple](https://www.umple.org) — diagrams, code, requirement tracing, validation, example mains, mixsets, and an orchestrator that chains those skills. Powered by the Umple Online API. No local dependencies required.
 
 ## Skills
 
@@ -32,6 +32,7 @@ Describe your domain model and get complete, working code in your target languag
 - Ruby
 - C++ (real-time)
 - SQL (CREATE TABLE DDL)
+- JSON
 
 Generated code includes constructors, getters/setters, association management methods, and state machine logic — no boilerplate to write.
 
@@ -48,6 +49,22 @@ Turn labelled requirements into an Umple model tagged with `req` / `implementsRe
 
 **Example prompt:**
 > Turn these into an Umple model and tag each feature: req R01 { A member has a name. } req R02 { A book has a title and ISBN. } req R03 { Members borrow many books. }
+
+### Model Validator
+
+Compile an `.ump` file and report errors plus Umple best-practice issues (duplicate associations, bad `implementsReq` IDs, reserved state names).
+
+### Main Generator
+
+Add a `public static void main` that constructs objects or fires state-machine events.
+
+### Mixset Builder
+
+Split a model with mixins, `mixset` / `use`, and multiple `.ump` files (product-line features).
+
+### Feature Orchestrator
+
+Routes a large request through the skills above (skills calling skills) so the agent can use more of the Umple language.
 
 ## Using with Claude
 
@@ -66,7 +83,7 @@ Once uploaded, Claude will automatically use the skills when you ask for diagram
 npx skills add umple/umple-skills
 ```
 
-The skills will be available as `/umple-diagram-generator`, `/umple-code-generator`, and `/umple-requirements-tracer`.
+Skills include `/umple-diagram-generator`, `/umple-code-generator`, `/umple-requirements-tracer`, `/umple-model-validator`, `/umple-main-generator`, `/umple-mixset-builder`, and `/umple-feature-orchestrator`.
 
 ## How it works
 
