@@ -29,9 +29,16 @@ umple-skills/
 ├── umple-diagram-generator/
 │   ├── SKILL.md
 │   └── references/
-└── umple-code-generator/
-    ├── SKILL.md
-    └── references/
+├── umple-code-generator/
+│   ├── SKILL.md
+│   └── references/
+├── umple-requirements-tracer/
+│   ├── SKILL.md
+│   └── references/
+├── umple-model-validator/
+├── umple-main-generator/
+├── umple-mixset-builder/
+└── umple-feature-orchestrator/
 ```
 
 ### Skill anatomy

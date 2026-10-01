@@ -1,6 +1,6 @@
 ---
 name: umple-code-generator
-description: "Generate production-quality code (Java, Python, PHP, Ruby, C++, SQL) from Umple models. Use when user requests: (1) Code generation from UML/class models (2) Java/Python/PHP/Ruby/C++ class generation (3) SQL schema from a domain model (4) Boilerplate-free implementation of classes with associations and state machines (5) Converting a domain model to working code. Produces complete implementations with constructors, getters/setters, association management, and state machine logic."
+description: "Generate production-quality code from Umple or natural-language models. Use when the user requests: (1) Code generation from UML/class/Umple models (2) Java, Python, PHP, Ruby, C++, SQL, or JSON from a domain model (3) Converting Umple or a data model into working code (4) Boilerplate-free classes with associations and state machines. Produces constructors, getters/setters, association management, and state machine logic."
 ---
 
 # Umple Code Generator
@@ -15,6 +15,7 @@ description: "Generate production-quality code (Java, Python, PHP, Ruby, C++, SQ
 | Ruby     | `Ruby`           | Experimental                   |
 | C++      | `RTCpp`          | Real-time C++ with headers     |
 | SQL      | `Sql`            | CREATE TABLE DDL + foreign keys|
+| JSON     | `Json`           | Model as JSON                  |
 
 ## Workflow
 
