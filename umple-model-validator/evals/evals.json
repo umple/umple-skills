@@ -93,8 +93,7 @@
       "expectations": [
         "The agent distinguishes server write/permission issues from Umple model errors",
         "The agent does not claim the Person model is invalid solely because of permission denied",
-        "Guidance mentions retry or unique filename / server issue",
-        "The agent re-checks the same model with language=Php (or explains that this is how to separate server errors from model errors)"
+        "Guidance identifies a server issue and suggests retrying without a filename parameter"
       ]
     },
     {
@@ -109,11 +108,11 @@
     },
     {
       "id": 11,
-      "prompt": "Validate this simple model. The Java compile returned 'Compiler Error (Generation) ... Person.java (Permission denied) ... More information (9200)'.\n\nclass Person { String name; }",
-      "expected_output": "Classify 9200 as a server write error, re-check with language=Php, and report the model as valid.",
+      "prompt": "Validate this simple model. My API call sent filename=model.ump and the Java compile returned 'Compiler Error (Generation) ... Person.java (Permission denied) ... More information (9200)'.\n\nclass Person { String name; }",
+      "expected_output": "Classify 9200 as a server write error caused by the shared directory, re-send without filename, and report the model as valid.",
       "expectations": [
         "The 9200 / Permission denied message is reported as a server issue, not a model error",
-        "The agent re-sends the model with language=Php (or equivalent clean re-check)",
+        "The agent re-sends the model without a filename parameter",
         "The model is not changed to 'fix' the server error",
         "Status is PASS or PASS_WITH_NOTES, not FAIL"
       ]

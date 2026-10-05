@@ -20,7 +20,7 @@ description: "Generate an example Umple main method that instantiates objects or
    - **Class / data model:** `new Class(mandatoryArgs)`, then `addX` / `setX` for associations
    - **State machine:** `new Class()`, then call event methods (`off()`, `on()`, …)
    - Only call APIs Umple actually generates (no invented methods)
-6. Compile via the Umple Online API (`language=Java`). Use a unique `filename`.
+6. Compile via the Umple Online API (`language=Java`), without a `filename` parameter.
 7. On error: fix and retry up to 3 times. After 3 failures: stop and show the compiler message.
 8. Save `<name>/model.ump`. Show the Umple source. Optionally generate Java and point to `main`.
 
@@ -34,15 +34,14 @@ description: "Generate an example Umple main method that instantiates objects or
 | `language`      | `Java`             |
 | `languageStyle` | `codegen`          |
 | `umpleCode`     | Full Umple source  |
-| `filename`      | unique `*.ump`     |
 
-Use curl, WebFetch, or fetch.
+Use curl, WebFetch, or fetch. Do **not** send a `filename` parameter: without it the server compiles in a fresh private directory. A bare name such as `model.ump` makes it work in a directory shared by every API user, which causes `Permission denied` (9200) errors and can return other users' generated files.
 
 ### Response parsing
 
 - Success: content after `URL_SPLIT`; decode HTML entities; files split by `//%% NEW FILE`.
 - Error: `umple-message-error`.
-- Server write error (`Compiler Error (Generation)` + `Permission denied` / `9200`, or `Not able to open file`): not a model bug. Re-send with `language=Php`; only errors/warnings there count. Do not burn retries on it.
+- Server write error (`Compiler Error (Generation)` with `Permission denied` / `9200`, or `Not able to open file`): a hosting problem, not a model bug. Make sure no `filename` was sent, retry once, and never change the model because of it.
 
 ## Output
 

@@ -55,6 +55,6 @@ Product line
 - Prefer smaller correct models.
 - One association per class pair.
 - Never name a state `Final`.
-- Unique API `filename` when calling UmpleOnline.
-- A server write error (9200 `Permission denied`) is not a model error: re-check with `language=Php`.
+- Never send a `filename` parameter to the UmpleOnline API (it makes the server use a shared directory).
+- A server write error (9200 `Permission denied`) is not a model error.
 - After 3 compile failures: stop and show the message.

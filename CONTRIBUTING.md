@@ -61,7 +61,7 @@ Skills call the Umple Online API using whatever HTTP tool is available in the ag
 3. Link related issues if available.
 4. Include sample commands/output when behavior changes.
 5. Update docs (`README.md`, `SKILL.md`, references) for user-facing changes.
-6. Test API calls against the Umple Online endpoint before submitting. Use a unique `filename` per request; if Java returns a 9200 `Permission denied` server error, re-check the model with `language=Php`.
+6. Test API calls against the Umple Online endpoint before submitting. Do not send a `filename` parameter: the server then uses a fresh private directory instead of one shared by all API users.
 7. **Do not commit zip files.** Skill zips are built automatically by CI and attached to GitHub Releases. Use `./build-zips.sh` for local testing only.
 
 ## Review expectations

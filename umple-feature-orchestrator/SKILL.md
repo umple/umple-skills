@@ -56,9 +56,9 @@ Keep models small. One association per class pair. No state named `Final`.
 
 ## Compile
 
-Finish through `https://cruise.umple.org/umpleonline/scripts/compiler.php` (`language=Java` unless the user asked another target). Unique `filename`. Retry up to 3 times, then stop and show the error.
+Finish through `https://cruise.umple.org/umpleonline/scripts/compiler.php` (`language=Java` unless the user asked another target), with no `filename` parameter. Retry up to 3 times, then stop and show the error.
 
-- Server write error (`Compiler Error (Generation)` + `Permission denied` / `9200`, or `Not able to open file`): not a model bug. Re-send with `language=Php`; only errors/warnings there count. Do not burn retries on it.
+- Server write error (`Compiler Error (Generation)` with `Permission denied` / `9200`, or `Not able to open file`): a hosting problem, not a model bug. Make sure no `filename` was sent, retry once, and never change the model because of it.
 
 ## Output
 

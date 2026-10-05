@@ -70,11 +70,10 @@ use Premium;          // activates
 Always call:
 
 `POST https://cruise.umple.org/umpleonline/scripts/compiler.php`  
-with `language=Java`, `languageStyle=codegen`, unique `filename`. If the only error is a server write error, re-check with `language=Php`.
+with `language=Java`, `languageStyle=codegen`, and no `filename` parameter.
 
 If validating traceability, also call `language=PlainRequirementsDoc` and check `IMPLEMENTED BY`.
 
 ## Common false alarms
 
-- `Compiler Error (Generation)` with `Permission denied` (9200), or `Not able to open file ...`, is a **hosting** problem, not a model problem. `language=Php` gives a clean signal for the same model.
-- Prefer a unique filename per request to reduce collisions on the shared server.
+- `Compiler Error (Generation)` with `Permission denied` (9200), or `Not able to open file ...`, is a **hosting** problem, not a model problem. It happens when a `filename` is sent (the server then works in a shared directory); re-send without `filename`.

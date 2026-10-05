@@ -33,9 +33,8 @@ description: "Generate diagrams (state machines, class diagrams, ER diagrams) fr
 | `language`      | See table above                                                |
 | `languageStyle` | `diagramUpdate`                                                |
 | `umpleCode`     | The Umple source code                                          |
-| `filename`      | unique `*.ump` (e.g. `diagram-<shortid>.ump`)                  |
 
-Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.).
+Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.). Do **not** send a `filename` parameter: without it the server compiles in a fresh private directory. A bare name such as `model.ump` makes it work in a directory shared by every API user, which causes `Permission denied` (9200) errors and can return other users' generated files.
 
 ### Response parsing
 

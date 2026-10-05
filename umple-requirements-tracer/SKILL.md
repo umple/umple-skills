@@ -35,9 +35,8 @@ If the source file already contains `req ID { ... }`, reuse those IDs exactly. D
 | `language`      | `Java`            | `PlainRequirementsDoc`      |
 | `languageStyle` | `codegen`         | `codegen`                   |
 | `umpleCode`     | The Umple source  | The Umple source            |
-| `filename`      | unique `*.ump`    | unique `*.ump`              |
 
-Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.). Use a **unique** `filename` per request (e.g. `trace-<shortid>.ump`); the server is shared and a fixed name can return another user's output.
+Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.). Do **not** send a `filename` parameter: without it the server compiles in a fresh private directory. A bare name such as `model.ump` makes it work in a directory shared by every API user, which causes `Permission denied` (9200) errors and can return other users' generated files.
 
 ### Response parsing
 
@@ -47,11 +46,11 @@ Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.). Use a **uniqu
 
 **Missing requirement ID:** a **warning** (`umple-message-warning`, `Cannot find specified requirement identifier(s): R99`, code 401), not an error. Still treat it as a failure: every `implementsReq` ID must match a `req` definition.
 
+**PlainRequirementsDoc success:** HTML listing each req and `IMPLEMENTED BY:` with class/attribute/etc. names.
+
 ### Server write errors (not model errors)
 
-The shared UmpleOnline server sometimes cannot write generated files. Symptoms: `Compiler Error (Generation)` with `Permission denied` / `More information (9200)`, or `Not able to open file ...`. These say nothing about the model. Re-send the same source with `language=Php`: any `umple-message-error` or `umple-message-warning` in that response is a real model problem; if there is none, the model is valid. Never retry-loop on a server write error.
-
-**PlainRequirementsDoc success:** HTML listing each req and `IMPLEMENTED BY:` with class/attribute/etc. names.
+Server write error (`Compiler Error (Generation)` with `Permission denied` / `9200`, or `Not able to open file`): a hosting problem, not a model bug. Make sure no `filename` was sent, retry once, and never change the model because of it.
 
 ## Output
 

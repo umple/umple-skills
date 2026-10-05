@@ -37,9 +37,8 @@ description: "Generate production-quality code from Umple or natural-language mo
 | `language`      | See table above      |
 | `languageStyle` | `codegen`            |
 | `umpleCode`     | The Umple source code|
-| `filename`      | unique `*.ump` (e.g. `gen-<shortid>.ump`) |
 
-Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.). The server is shared: a fixed `filename` such as `model.ump` can return another user's generated files.
+Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.). Do **not** send a `filename` parameter: without it the server compiles in a fresh private directory. A bare name such as `model.ump` makes it work in a directory shared by every API user, which causes `Permission denied` (9200) errors and can return other users' generated files.
 
 ### Response parsing
 
@@ -47,7 +46,7 @@ Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.). The server is
 
 **Error:** response contains `<span class="umple-message-error">`. Strip HTML tags to read the error.
 
-**Server write error:** `Compiler Error (Generation)` with `Permission denied` / `(9200)`, or `Not able to open file`. This is a hosting problem, not a model bug: do not change the model. Tell the user, and offer another language (`Php` currently generates reliably) or local generation with `java -jar umple.jar -g Java model.ump`.
+**Server write error:** `Compiler Error (Generation)` with `Permission denied` / `(9200)`, or `Not able to open file`. This is a hosting problem, not a model bug: make sure no `filename` was sent and retry once. Do not change the model; if it persists, tell the user and offer local generation with `java -jar umple.jar -g Java model.ump`.
 
 ## Output
 

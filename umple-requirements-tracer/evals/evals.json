@@ -14,7 +14,7 @@
         "Every implementsReq ID used also has a matching req definition",
         "The association between Member and Book is defined only once",
         "The API was called with language set to 'Java' and languageStyle set to 'codegen'",
-        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
+        "The API response does not contain 'umple-message-error'",
         "The API response does not contain 'Cannot find specified requ'",
         "A model.ump file was saved containing the Umple source code"
       ]
@@ -30,7 +30,7 @@
         "implementsReq L01 is associated with class Loan or the borrowDate attribute",
         "implementsReq L03 is associated with the Member–Loan association or the Member class",
         "No new requirement IDs were invented beyond L01, L02, and L03",
-        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
+        "The API response does not contain 'umple-message-error'",
         "The API response does not contain 'Cannot find specified requ'",
         "A model.ump file was saved"
       ]
@@ -44,7 +44,7 @@
         "The Umple source contains 'class Order'",
         "The Umple source tags Order (or its attributes) using both R1 and R2",
         "When both requirements apply to the same element, they appear together as 'implementsReq R1, R2' (or R2, R1), not as two separate identical class-level lists",
-        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)"
+        "The API response does not contain 'umple-message-error'"
       ]
     },
     {
@@ -58,7 +58,7 @@
         "implementsReq appears before the class or before the state-machine block",
         "Individual states are not each prefixed with their own implementsReq",
         "The state machine does not use 'Final' as a custom state name",
-        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)"
+        "The API response does not contain 'umple-message-error'"
       ]
     },
     {
@@ -71,7 +71,7 @@
         "The Umple source does NOT invent a large set of req IDs to cover every sentence of the dump",
         "Each class pair has at most one association defined",
         "The API was called with language set to 'Java' and languageStyle set to 'codegen'",
-        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
+        "The API response does not contain 'umple-message-error'",
         "A model.ump file was saved"
       ]
     },
@@ -84,7 +84,7 @@
         "The Umple source contains 'class Student' and 'class Course'",
         "The Umple source contains a many-to-many association between Student and Course",
         "The Umple source contains 'implementsReq' tags that reference only the IDs defined in the req blocks",
-        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
+        "The API response does not contain 'umple-message-error'",
         "The API response does not contain 'Cannot find specified requ'"
       ]
     },
@@ -94,7 +94,7 @@
       "expected_output": "Compiling Umple with implementsReq, plus a PlainRequirementsDoc API call whose output lists R10 and R11 as IMPLEMENTED BY the corresponding classes or attributes.",
       "expectations": [
         "The Umple source contains 'req R10' and 'req R11' and 'implementsReq' tags for both",
-        "The Java/codegen API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
+        "The Java/codegen API response does not contain 'umple-message-error'",
         "The API was also called with language set to 'PlainRequirementsDoc'",
         "The PlainRequirementsDoc response mentions R10 and R11",
         "The PlainRequirementsDoc response contains 'IMPLEMENTED BY' for the tagged requirements",
@@ -109,7 +109,7 @@
         "The Umple source contains 'implementsReq A01'",
         "The implementsReq A01 line appears immediately before class Library or immediately before the name attribute",
         "implementsReq is not placed only at the end of the file after the class body",
-        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
+        "The API response does not contain 'umple-message-error'",
         "The API response does not contain 'Cannot find specified requ'"
       ]
     },
@@ -123,7 +123,7 @@
         "The Umple source does not define req IDs other than P01",
         "The Umple source does not contain implementsReq IDs other than P01",
         "The API response does not contain 'Cannot find specified requ'",
-        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)"
+        "The API response does not contain 'umple-message-error'"
       ]
     },
     {
@@ -135,7 +135,7 @@
         "The final Umple source does not tag Person with implementsReq R99",
         "A missing-requirement warning was treated as a failure to fix, not ignored",
         "The agent retried at most 3 times after a compiler error or missing-requirement warning",
-        "The final API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
+        "The final API response does not contain 'umple-message-error'",
         "The final API response does not contain 'Cannot find specified requ'"
       ]
     }

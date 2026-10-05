@@ -9,11 +9,11 @@ description: "Validate Umple models against the compiler and Umple best practice
 
 1. Read `references/best-practices.md`.
 2. Obtain the Umple source (pasted, from a file, or a minimal repro if the user only described the bug).
-3. Call the Umple Online API with `language=Java` and `languageStyle=codegen`. Prefer a **unique** `filename` (e.g. `check-<shortid>.ump`) so server temp files do not collide.
+3. Call the Umple Online API with `language=Java` and `languageStyle=codegen`, and **no** `filename` parameter (see API below).
 4. Classify every compiler signal:
    - `umple-message-error` → error
    - `umple-message-warning` with `Cannot find specified requ` → treat as **failure** (bad `implementsReq`)
-   - `Compiler Error (Generation)` with `Permission denied` (9200), or `Not able to open file` → **server write issue**, not a model bug. Re-send with `language=Php` and classify that response instead
+   - `Compiler Error (Generation)` with `Permission denied` (9200), or `Not able to open file` → **server write issue**, not a model bug. Make sure no `filename` was sent and retry once
 5. Independently scan the source against best practices (even if it compiles): the same association declared from both classes, `Final` state name, symmetric reflexive association without role name, mixset never `use`d, `use` of an undeclared mixset, `implementsReq` with no matching `req`, etc.
 6. If the user asked you to **fix**: apply the smallest change, recompile, retry up to 3 times. After 3 failures: stop, show last source + exact message.
 7. Output a short report (see below) and save `model.ump` if you fixed anything.
@@ -28,18 +28,17 @@ description: "Validate Umple models against the compiler and Umple best practice
 | `language`      | `Java` (default)     |
 | `languageStyle` | `codegen`            |
 | `umpleCode`     | The Umple source     |
-| `filename`      | unique `*.ump` name  |
 
 Optional second call: `language=PlainRequirementsDoc` when checking `req` / `implementsReq` traceability.
 
-Use WebFetch, curl, or fetch.
+Use WebFetch, curl, or fetch. Do **not** send a `filename` parameter: without it the server compiles in a fresh private directory. A bare name such as `model.ump` makes it work in a directory shared by every API user, which causes `Permission denied` (9200) errors and can return other users' generated files.
 
 ### Response parsing
 
 - **Error:** `<span class="umple-message-error">` — strip tags.
 - **Warning:** `<span class="umple-message-warning">` — strip tags; do not ignore missing-req warnings.
 - **Success path:** content after `URL_SPLIT`; decode `&lt;` `&gt;` `&amp;` `&quot;`.
-- **Server write failure:** `Compiler Error (Generation)` with `Permission denied` / `(9200)`, or `Not able to open file` — report under `Server:`, then re-check with `language=Php` to classify the model.
+- **Server write failure:** `Compiler Error (Generation)` with `Permission denied` / `(9200)`, or `Not able to open file` — report under `Server:`, not as a model error. Usually caused by sending a `filename`; retry once without it.
 
 ## Report format
 
