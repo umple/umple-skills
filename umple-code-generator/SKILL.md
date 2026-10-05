@@ -37,15 +37,17 @@ description: "Generate production-quality code from Umple or natural-language mo
 | `language`      | See table above      |
 | `languageStyle` | `codegen`            |
 | `umpleCode`     | The Umple source code|
-| `filename`      | `model.ump`          |
+| `filename`      | unique `*.ump` (e.g. `gen-<shortid>.ump`) |
 
-Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.).
+Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.). The server is shared: a fixed `filename` such as `model.ump` can return another user's generated files.
 
 ### Response parsing
 
 **Success:** code appears after a `<p>URL_SPLIT` delimiter. Strip HTML tags and decode entities (`&lt;` → `<`, `&gt;` → `>`, `&amp;` → `&`, `&quot;` → `"`). Files separated by `//%% NEW FILE ClassName BEGINS HERE %%`.
 
 **Error:** response contains `<span class="umple-message-error">`. Strip HTML tags to read the error.
+
+**Server write error:** `Compiler Error (Generation)` with `Permission denied` / `(9200)`, or `Not able to open file`. This is a hosting problem, not a model bug: do not change the model. Tell the user, and offer another language (`Php` currently generates reliably) or local generation with `java -jar umple.jar -g Java model.ump`.
 
 ## Output
 

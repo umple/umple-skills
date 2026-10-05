@@ -111,6 +111,18 @@
         "use activates the mixset",
         "The API was called with language=Java"
       ]
+    },
+    {
+      "id": 11,
+      "prompt": "Core class Library { String name; }. Add two optional features: Analytics (adds Integer visits) and Reports (adds String reportFormat). Reports only works when Analytics is on. Turn both on.",
+      "expected_output": "Two mixsets; Reports declares require [Analytics]; use statements activate both.",
+      "expectations": [
+        "mixset Analytics and mixset Reports (or equivalent names) exist",
+        "The Reports mixset contains require [Analytics] (or an equivalent require condition)",
+        "use statements activate both Reports and Analytics",
+        "The agent does not use require subfeature or isFeature (no feature model was requested)",
+        "The API was called with language=Java"
+      ]
     }
   ]
 }

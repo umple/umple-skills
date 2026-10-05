@@ -13,8 +13,8 @@ description: "Validate Umple models against the compiler and Umple best practice
 4. Classify every compiler signal:
    - `umple-message-error` → error
    - `umple-message-warning` with `Cannot find specified requ` → treat as **failure** (bad `implementsReq`)
-   - Server text like `Not able to open file` / `permission denied` while writing `.java` → **server write issue**, not a model bug; still check whether `URL_SPLIT` / class bodies appeared
-5. Independently scan the source against best practices (even if it compiles): duplicate associations, `Final` state name, reflexive association without role name, mixset never `use`d, `implementsReq` with no matching `req`, etc.
+   - `Compiler Error (Generation)` with `Permission denied` (9200), or `Not able to open file` → **server write issue**, not a model bug. Re-send with `language=Php` and classify that response instead
+5. Independently scan the source against best practices (even if it compiles): the same association declared from both classes, `Final` state name, symmetric reflexive association without role name, mixset never `use`d, `use` of an undeclared mixset, `implementsReq` with no matching `req`, etc.
 6. If the user asked you to **fix**: apply the smallest change, recompile, retry up to 3 times. After 3 failures: stop, show last source + exact message.
 7. Output a short report (see below) and save `model.ump` if you fixed anything.
 
@@ -39,7 +39,7 @@ Use WebFetch, curl, or fetch.
 - **Error:** `<span class="umple-message-error">` — strip tags.
 - **Warning:** `<span class="umple-message-warning">` — strip tags; do not ignore missing-req warnings.
 - **Success path:** content after `URL_SPLIT`; decode `&lt;` `&gt;` `&amp;` `&quot;`.
-- **Server write failure:** message contains `Not able to open file` or `permission denied` on generated `.java` — report separately from model errors.
+- **Server write failure:** `Compiler Error (Generation)` with `Permission denied` / `(9200)`, or `Not able to open file` — report under `Server:`, then re-check with `language=Php` to classify the model.
 
 ## Report format
 
@@ -56,5 +56,5 @@ Suggested fix: <umple snippet if any>
 - Prefer a smaller valid model over guessing syntax.
 - One association per class pair — never define the same pair from both sides.
 - Do not invent requirement IDs when reviewing `implementsReq`.
-- Never use `Final` as a custom state name; never name a state machine `Timer`.
+- Never use `Final` as a custom state name (error 74). Do not name a state machine `Timer`: it compiles, but generated Java with `after(...)` clashes with `java.util.Timer`.
 - After 3 failed fix attempts, stop and ask the user.

@@ -33,7 +33,7 @@ description: "Generate diagrams (state machines, class diagrams, ER diagrams) fr
 | `language`      | See table above                                                |
 | `languageStyle` | `diagramUpdate`                                                |
 | `umpleCode`     | The Umple source code                                          |
-| `filename`      | `model.ump`                                                    |
+| `filename`      | unique `*.ump` (e.g. `diagram-<shortid>.ump`)                  |
 
 Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.).
 

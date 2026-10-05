@@ -12,7 +12,7 @@ req R02 {
 }
 ```
 
-- ID is an identifier: `R01`, `H001`, `REQ101` (avoid hyphens inside the ID if unsure).
+- ID is an identifier: `R01`, `H001`, `REQ101`. Hyphens and underscores are accepted (`REQ-101`, `REQ_101`).
 - Body is free text. Keep it one requirement per `req` block.
 
 ## Tag the next element
@@ -34,7 +34,7 @@ class Book {
 association { * Member -- * Book; }
 ```
 
-Multiple IDs on one element:
+Multiple IDs on one element (assuming `req R01` and `req R02` exist):
 
 ```umple
 implementsReq R01, R02;
@@ -53,8 +53,9 @@ Same requirement on several elements: repeat `implementsReq R01;` before each.
 | State machine | `implementsReq R1;` then `sm { ... }` (tag the machine, not each state) |
 | Method | `implementsReq R1;` then the method |
 | Trait / interface | `implementsReq R1;` then `trait` / `interface` |
+| Enum | `implementsReq R1;` then `enum Color { ... }` |
 
-Inline after an attribute also works, but prefer the line-before form:
+Inline after an attribute also works (from the Umple manual), but prefer the line-before form. Here `var1` implements R02 and `var2` implements R01 and R02:
 
 ```umple
 class Example {
@@ -66,11 +67,12 @@ class Example {
 
 ## Do not
 
-- Reference an ID that has no `req` block — compiler warning: `Cannot find specified requ...`
+- Reference an ID that has no `req` block — warning 401: `Cannot find specified requirement identifier(s)`
 - Re-emit `req { ... }` blocks that already exist in the file
 - Invent fine-grained `implementsReq` mappings from a long unlabelled spec dump
 - Duplicate the same association from both classes
-- Name a state `Final`
+- Name a state `Final` (error 74, reserved keyword)
+- Tag individual states: the hosted compiler accepts it but does not list states in PlainRequirementsDoc; tag the `sm` block or the class instead
 
 ## Verify traceability
 

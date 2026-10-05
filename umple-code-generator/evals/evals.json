@@ -9,7 +9,7 @@
         "The Umple source contains 'class Person' with 'immutable String id' and 'String name' attributes",
         "The Umple source contains 'key { id }' to define the primary key",
         "The API was called with language set to 'Java' and languageStyle set to 'codegen'",
-        "The API response does not contain 'umple-message-error'",
+        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
         "The generated Java code contains 'getId()' method but no 'setId()' method (immutable)",
         "The generated Java code contains both 'getName()' and 'setName(' methods",
         "The generated output uses '//%% NEW FILE' separators or is saved as a .java file",
@@ -26,7 +26,7 @@
         "The Umple source contains a many-to-many association between Order and Product",
         "Each class pair has at most one association defined (no duplicate associations)",
         "The API was called with language set to 'Java' and languageStyle set to 'codegen'",
-        "The API response does not contain 'umple-message-error'",
+        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
         "The generated output contains multiple '//%% NEW FILE' separators (one per class)",
         "The generated code contains association management methods like 'addProduct' or 'addOrder'"
       ]
@@ -39,7 +39,7 @@
         "The Umple source contains 'class Student' with 'name', 'studentNumber', and a GPA attribute (Double type)",
         "The Umple source contains 'lazy' keyword for the email attribute",
         "The API was called with language set to 'Python' and languageStyle set to 'codegen'",
-        "The API response does not contain 'umple-message-error'",
+        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
         "The generated Python code contains a class definition with 'class Student' or 'class Student:'",
         "The generated code contains '__init__' method or constructor that does not include email as a required parameter"
       ]
@@ -53,7 +53,7 @@
         "The Umple source contains 'class Course' with 'courseId', 'title', and 'credits' attributes",
         "The Umple source contains a many-to-many association between Student and Course",
         "The API was called with language set to 'Sql' and languageStyle set to 'codegen'",
-        "The API response does not contain 'umple-message-error'",
+        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
         "The generated SQL contains 'CREATE TABLE' statements",
         "The generated SQL contains 'PRIMARY KEY' constraints",
         "The generated SQL contains 'FOREIGN KEY' constraints or a join table for the many-to-many relationship"
@@ -69,7 +69,7 @@
         "The state machine has transitions forming a cycle: Green -> Yellow -> Red -> Green",
         "The Umple source contains entry actions using 'entry /' syntax",
         "The API was called with language set to 'Java' and languageStyle set to 'codegen'",
-        "The API response does not contain 'umple-message-error'",
+        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
         "The generated Java code contains an enum or state-related constants for Green, Yellow, Red",
         "The generated Java code contains method(s) for triggering state transitions"
       ]
@@ -82,7 +82,7 @@
         "The Umple source contains 'class BankAccount' with 'immutable String accountNumber' and 'balance' attributes",
         "The API was called once with language set to 'Java' and languageStyle set to 'codegen'",
         "The API was called once with language set to 'Php' and languageStyle set to 'codegen'",
-        "Neither API response contains 'umple-message-error'",
+        "Neither API response contains a model-level 'umple-message-error' (server write errors such as 9200 'Permission denied' do not count)",
         "The generated Java output contains a BankAccount.java file or class definition",
         "The generated PHP output contains a BankAccount.php file or class definition",
         "Both outputs were generated from the same Umple model (same model.ump file)"
@@ -97,7 +97,7 @@
         "The School-Teacher association is defined exactly once (not from both sides)",
         "The School-Student association is defined exactly once (not from both sides)",
         "The API was called with language set to 'Java' and languageStyle set to 'codegen'",
-        "The API response does not contain 'umple-message-error'",
+        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
         "The generated output contains '//%% NEW FILE' separators for multiple classes",
         "The generated code contains association management methods (e.g., 'addTeacher', 'addStudent')"
       ]
@@ -111,7 +111,7 @@
         "The Umple source contains a reflexive association (Employee to Employee) with a role name such as 'manager'",
         "The reflexive association uses proper syntax: '* -- 0..1 Employee manager' or similar with a role name",
         "The API was called with language set to 'Java' and languageStyle set to 'codegen'",
-        "The API response does not contain 'umple-message-error'",
+        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
         "The generated Java code contains 'getManager()' or similar method for the role-named end",
         "The generated Java code contains methods for managing the many-side of the reflexive association (e.g., 'getEmployees()' or 'addEmployee(')"
       ]
@@ -126,7 +126,7 @@
         "The state machine does NOT contain a state literally named 'Final' (reserved word)",
         "The state machine uses 'final Archived' syntax for the terminal state",
         "The API was called with language set to 'Java' and languageStyle set to 'codegen'",
-        "The API response does not contain 'umple-message-error'",
+        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
         "The generated Java code contains an enum or constants for the workflow states",
         "The generated Java code contains event methods for triggering transitions between states"
       ]
@@ -141,7 +141,7 @@
         "The Umple source contains 'class Task' with 'isA Timestamped'",
         "The Task class has 'title', 'description', and 'Priority' attributes",
         "The API was called with language set to 'Java' and languageStyle set to 'codegen'",
-        "The API response does not contain 'umple-message-error'",
+        "The API response contains no model-level 'umple-message-error' (a server write error such as 9200 'Permission denied' does not count if a language=Php re-check is clean)",
         "The generated Java code contains the Task class with getter/setter methods for createdAt and updatedAt (from the trait)",
         "The generated Java code contains a Priority enum definition or reference"
       ]

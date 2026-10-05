@@ -70,13 +70,32 @@ Both fragments activate together.
 ## use statements
 
 ```umple
-use Premium;       // activate mixset or include file Premium / Premium.ump
+use Premium;       // activate mixset Premium (warning 1513 if it is not declared)
 use core.ump;      // include another file (once)
 use !Premium;      // cancel / do not use Premium
 ```
 
 - A model file or mixset is included **once**; duplicate `use` of the same name is ignored.
 - `use !Name;` cancels a previous request to use `Name`.
+
+## require statements (feature dependencies)
+
+```umple
+mixset Reports {
+  require [Analytics];   // Reports only makes sense with Analytics
+  class Library { String reportFormat; }
+}
+mixset Analytics {
+  class Library { Integer visits; }
+}
+use Reports;
+use Analytics;
+```
+
+- The argument is a Boolean condition in square brackets: `[A and B]`, `[A or B]`, `[not A]`, `[1..2 of {Mp3, Wav}]`.
+- A top-level `require` always applies; inside a mixset it applies only when that mixset is used.
+- If the `use` statements do not satisfy a `require`, recent compilers give warning **W1514**. The hosted UmpleOnline compiler may stay silent, so check each applicable `require` against the `use` list yourself.
+- `require subfeature [...]` (or `isFeature;` inside a mixset) builds a feature model; only use it when the user asks for one.
 
 ## Multiple files pattern
 
@@ -106,7 +125,8 @@ Optional states/transitions can live in a mixset (inline or compositional). Keep
 | Situation | Tell the user |
 | --------- | ------------- |
 | Mixset defined, no `use` | Feature is inactive / dead for this build |
-| `use` without declaration | Warning risk — declare empty mixset or remove use |
+| `use` without declaration | Warning 1513 — declare the mixset or remove the `use` |
+| `require` not satisfied | W1514 (may be silent online) — add the missing `use` |
 | Two files mixin the same class | Expected merge |
 
 ## Gotchas

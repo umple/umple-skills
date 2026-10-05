@@ -39,6 +39,8 @@ umple-skills/
 ├── umple-main-generator/
 ├── umple-mixset-builder/
 └── umple-feature-orchestrator/
+
+(each skill: SKILL.md, references/, evals/)
 ```
 
 ### Skill anatomy
@@ -50,7 +52,7 @@ Each skill has two layers:
 | `SKILL.md` | Workflow orchestration | Changing when/how the skill triggers |
 | `references/` | Domain knowledge + API docs | Updating Umple syntax, API details, or patterns |
 
-Skills call the Umple Online API using whatever HTTP tool is available in the agent's environment. The `references/api-reference.md` in each skill documents the endpoint, parameters, and response parsing.
+Skills call the Umple Online API using whatever HTTP tool is available in the agent's environment. The `## API` section of each `SKILL.md` documents the endpoint, parameters, and response parsing. Each skill also has `evals/evals.json` with test prompts and expectations.
 
 ## Pull request guidelines
 
@@ -59,7 +61,7 @@ Skills call the Umple Online API using whatever HTTP tool is available in the ag
 3. Link related issues if available.
 4. Include sample commands/output when behavior changes.
 5. Update docs (`README.md`, `SKILL.md`, references) for user-facing changes.
-6. Test API calls against the Umple Online endpoint before submitting.
+6. Test API calls against the Umple Online endpoint before submitting. Use a unique `filename` per request; if Java returns a 9200 `Permission denied` server error, re-check the model with `language=Php`.
 7. **Do not commit zip files.** Skill zips are built automatically by CI and attached to GitHub Releases. Use `./build-zips.sh` for local testing only.
 
 ## Review expectations

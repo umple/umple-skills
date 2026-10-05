@@ -46,12 +46,12 @@
     },
     {
       "id": 5,
-      "prompt": "Validate this reflexive association with no role name:\n\nclass Employee {\n  * -- 0..1 Employee;\n}",
-      "expected_output": "Flag missing role name / self on reflexive association.",
+      "prompt": "Validate this reflexive association with no role name:\n\nclass Employee {\n  * -- * Employee;\n}",
+      "expected_output": "Report the compiler error: a reflexive association with the same multiplicity on both ends needs a role name or self.",
       "expectations": [
-        "The report identifies a reflexive association problem",
-        "The suggestion includes a role name (e.g. manager) or the self keyword",
-        "Status is not a silent PASS"
+        "The report identifies the reflexive association error (role name or self required)",
+        "The suggestion includes a role name (e.g. colleagues) or the self keyword",
+        "Status is FAIL, not PASS"
       ]
     },
     {
@@ -93,7 +93,8 @@
       "expectations": [
         "The agent distinguishes server write/permission issues from Umple model errors",
         "The agent does not claim the Person model is invalid solely because of permission denied",
-        "Guidance mentions retry or unique filename / server issue"
+        "Guidance mentions retry or unique filename / server issue",
+        "The agent re-checks the same model with language=Php (or explains that this is how to separate server errors from model errors)"
       ]
     },
     {
@@ -104,6 +105,17 @@
         "Missing req R01 is reported",
         "Status is FAIL",
         "Suggested fix adds req R01 { ... } or removes implementsReq"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Validate this simple model. The Java compile returned 'Compiler Error (Generation) ... Person.java (Permission denied) ... More information (9200)'.\n\nclass Person { String name; }",
+      "expected_output": "Classify 9200 as a server write error, re-check with language=Php, and report the model as valid.",
+      "expectations": [
+        "The 9200 / Permission denied message is reported as a server issue, not a model error",
+        "The agent re-sends the model with language=Php (or equivalent clean re-check)",
+        "The model is not changed to 'fix' the server error",
+        "Status is PASS or PASS_WITH_NOTES, not FAIL"
       ]
     }
   ]

@@ -60,7 +60,7 @@ Add a `public static void main` that constructs objects or fires state-machine e
 
 ### Mixset Builder
 
-Split a model with mixins, `mixset` / `use`, and multiple `.ump` files (product-line features).
+Split a model with mixins, `mixset` / `use` / `require`, and multiple `.ump` files (product-line features).
 
 ### Feature Orchestrator
 
@@ -75,7 +75,7 @@ Routes a large request through the skills above (skills calling skills) so the a
 3. Click **"+"** → **"Upload a skill"**
 4. Upload the `.zip` file for each skill
 
-Once uploaded, Claude will automatically use the skills when you ask for diagrams or code generation.
+Once uploaded, Claude will automatically use the skills when you ask for diagrams, code, requirement tracing, validation, example mains, or mixsets.
 
 ### Claude Code (CLI)
 
@@ -92,7 +92,8 @@ All skills use the [Umple Online API](https://cruise.umple.org/umpleonline/) —
 ```
 <skill>/
 ├── SKILL.md         # Workflow — when and how to use the skill
-└── references/      # Domain knowledge — Umple syntax and patterns
+├── references/      # Domain knowledge — Umple syntax and patterns
+└── evals/           # Test prompts and expectations (excluded from release zips)
 ```
 
 ## Local development

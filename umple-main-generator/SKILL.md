@@ -42,7 +42,7 @@ Use curl, WebFetch, or fetch.
 
 - Success: content after `URL_SPLIT`; decode HTML entities; files split by `//%% NEW FILE`.
 - Error: `umple-message-error`.
-- Server `permission denied` / `Not able to open file` on `.java` is a server write issue — still keep valid Umple.
+- Server write error (`Compiler Error (Generation)` + `Permission denied` / `9200`, or `Not able to open file`): not a model bug. Re-send with `language=Php`; only errors/warnings there count. Do not burn retries on it.
 
 ## Output
 
@@ -52,7 +52,7 @@ Use curl, WebFetch, or fetch.
 
 ## Guardrails
 
-- Signature uses `String [ ] args` (space before `[]`) as in the Umple manual.
+- Signature uses `String [ ] args` (space before `[]`) as in the Umple manual; `String[] args` also compiles.
 - Tag the body `Java { ... }`. Add `Python { ... }` only if asked.
 - Do not call setters on `immutable` / key attributes that have no setter.
 - One association per class pair. Never name a state `Final`.

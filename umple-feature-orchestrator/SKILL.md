@@ -18,7 +18,7 @@ Resolve paths relative to this skill directory first (`../<name>/SKILL.md`). If 
 | `req` / `implementsReq` / labelled requirements | `../umple-requirements-tracer/SKILL.md` |
 | Lint / compile errors / best practices | `../umple-model-validator/SKILL.md` |
 | Example `main` / instantiate / fire events | `../umple-main-generator/SKILL.md` |
-| Mixsets, mixins, multiple `.ump` files | `../umple-mixset-builder/SKILL.md` |
+| Mixsets, mixins, `require`, multiple `.ump` files | `../umple-mixset-builder/SKILL.md` |
 
 Also read `references/skill-map.md` for a one-page map.
 
@@ -57,6 +57,8 @@ Keep models small. One association per class pair. No state named `Final`.
 ## Compile
 
 Finish through `https://cruise.umple.org/umpleonline/scripts/compiler.php` (`language=Java` unless the user asked another target). Unique `filename`. Retry up to 3 times, then stop and show the error.
+
+- Server write error (`Compiler Error (Generation)` + `Permission denied` / `9200`, or `Not able to open file`): not a model bug. Re-send with `language=Php`; only errors/warnings there count. Do not burn retries on it.
 
 ## Output
 

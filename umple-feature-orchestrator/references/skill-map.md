@@ -9,7 +9,7 @@
 | **umple-requirements-tracer** | Labelled `req` + `implementsReq`; **no** invented tags on huge unlabelled dumps. |
 | **umple-model-validator** | Compile + best-practice report; fix loop (max 3). |
 | **umple-main-generator** | Add `public static void main(String [ ] args) Java { ... }` to demo objects/events. |
-| **umple-mixset-builder** | Mixins, `mixset` / `use` / `use !`, multiple `.ump` files. |
+| **umple-mixset-builder** | Mixins, `mixset` / `use` / `use !` / `require`, multiple `.ump` files. |
 | **umple-feature-orchestrator** | This skill — sequences the above. |
 
 ## Synonym routing
@@ -56,4 +56,5 @@ Product line
 - One association per class pair.
 - Never name a state `Final`.
 - Unique API `filename` when calling UmpleOnline.
+- A server write error (9200 `Permission denied`) is not a model error: re-check with `language=Php`.
 - After 3 compile failures: stop and show the message.

@@ -19,7 +19,7 @@ If the source file already contains `req ID { ... }`, reuse those IDs exactly. D
 1. Classify the input using the table above.
 2. Read `references/requirements-syntax.md`.
 3. Write valid Umple (prefer a smaller correct model over a large guessed one).
-4. Call the Umple Online API to compile (see below). Treat `umple-message-error` **and** warnings about missing requirement IDs as failures.
+4. Call the Umple Online API to compile (see below). Treat `umple-message-error` **and** warnings about missing requirement IDs as failures. Server write errors are not model failures (see below).
 5. On failure, read the message, fix the code, retry (up to 3 times).
 6. After 3 failures: stop. Show the last Umple source and the exact compiler message. Ask the user; do not keep guessing.
 7. If tagging was required, optionally call the API with `language=PlainRequirementsDoc` and check that tagged IDs appear under `IMPLEMENTED BY`.
@@ -35,9 +35,9 @@ If the source file already contains `req ID { ... }`, reuse those IDs exactly. D
 | `language`      | `Java`            | `PlainRequirementsDoc`      |
 | `languageStyle` | `codegen`         | `codegen`                   |
 | `umpleCode`     | The Umple source  | The Umple source            |
-| `filename`      | `model.ump`       | `model.ump`                 |
+| `filename`      | unique `*.ump`    | unique `*.ump`              |
 
-Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.).
+Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.). Use a **unique** `filename` per request (e.g. `trace-<shortid>.ump`); the server is shared and a fixed name can return another user's output.
 
 ### Response parsing
 
@@ -45,7 +45,11 @@ Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.).
 
 **Failure:** response contains `<span class="umple-message-error">`. Strip tags and read the message.
 
-**Missing requirement ID:** often a **warning** (`umple-message-warning`, text like `Cannot find specified requ...`), not an error. Still treat it as a failure: every `implementsReq` ID must match a `req` definition.
+**Missing requirement ID:** a **warning** (`umple-message-warning`, `Cannot find specified requirement identifier(s): R99`, code 401), not an error. Still treat it as a failure: every `implementsReq` ID must match a `req` definition.
+
+### Server write errors (not model errors)
+
+The shared UmpleOnline server sometimes cannot write generated files. Symptoms: `Compiler Error (Generation)` with `Permission denied` / `More information (9200)`, or `Not able to open file ...`. These say nothing about the model. Re-send the same source with `language=Php`: any `umple-message-error` or `umple-message-warning` in that response is a real model problem; if there is none, the model is valid. Never retry-loop on a server write error.
 
 **PlainRequirementsDoc success:** HTML listing each req and `IMPLEMENTED BY:` with class/attribute/etc. names.
 
