@@ -1,0 +1,119 @@
+{
+  "skill_name": "umple-feature-orchestrator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "From these labelled reqs, produce a tagged Umple model and Java code.\n\nreq R01 { A person has a name. }",
+      "expected_output": "Uses requirements-tracer then code-generator: req/implementsReq plus a Java API call.",
+      "expectations": [
+        "The agent follows or reads umple-requirements-tracer",
+        "The Umple source contains req R01 and implementsReq",
+        "The agent follows or reads umple-code-generator (or calls language=Java codegen)",
+        "The API is called with language=Java at least once",
+        "No invented extra requirement IDs beyond R01"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Draw a state model of a door Open/Closed, then add a main that toggles it.",
+      "expected_output": "Diagram/state Umple via diagram skill synonyms, then main-generator.",
+      "expectations": [
+        "The agent treats 'state model' as a state machine (diagram-generator or equivalent)",
+        "The Umple source contains Open and Closed states",
+        "A main method is generated that fires events",
+        "No state named Final",
+        "The API was called at least once"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Here is a huge unlabelled hospital narrative with no IDs (billing, labs, rotas, …). Build a domain model only — do not invent implementsReq.",
+      "expected_output": "Orchestrator routes to modeling without requirements-tracer tagging.",
+      "expectations": [
+        "The Umple source has no implementsReq",
+        "The agent does not invent a large req ID scheme",
+        "Domain classes such as Hospital/Patient/Ward (or similar) appear",
+        "Tim's unlabelled-dump rule is respected"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Create a Library product line: core always on; mixset Premium adds email on Member; activate Premium; validate.",
+      "expected_output": "mixset-builder then validator.",
+      "expectations": [
+        "A mixset Premium (or equivalent) exists with use",
+        "The agent mentions or runs validation/compile",
+        "Core Member/Library structure exists",
+        "The API was called with language=Java"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Generate a data model diagram for Student and Course many-to-many.",
+      "expected_output": "Routes to diagram-generator with class/data-model synonym.",
+      "expectations": [
+        "The agent uses diagram-generator (classDiagram or equivalent)",
+        "Student and Course appear",
+        "Many-to-many association is defined once",
+        "language=classDiagram or diagramUpdate style is used if an API diagram call is made"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "My Umple declares association A--B on both classes. Fix it, then generate a main.",
+      "expected_output": "validator fix first, then main-generator.",
+      "expectations": [
+        "Duplicate association is fixed (only one declaration remains)",
+        "A main method is added afterward",
+        "Validation/compile happens before claiming success",
+        "Retries do not exceed 3 for the fix loop"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "End-to-end: labelled reqs for a Light on/off, tag implementsReq, add main that toggles, generate Java.",
+      "expected_output": "tracer → main → code-generator pipeline.",
+      "expectations": [
+        "req and implementsReq appear for the light behaviour",
+        "A state machine or class Light exists",
+        "main fires on/off (or equivalent)",
+        "Java codegen API is called",
+        "The agent names or clearly uses multiple sibling skills"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Only generate Python from this Umple — do not draw a diagram.\n\nclass Box { String label; }",
+      "expected_output": "Single-skill route to code-generator with Python.",
+      "expectations": [
+        "The agent does not unnecessarily call diagram-generator",
+        "API language=Python is used",
+        "Box model is preserved",
+        "Orchestrator keeps the pipeline minimal"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Explain which Umple skills you would use for: (a) FSM diagram (b) implementsReq (c) mixsets — then do (b) only for req R1 { x }.",
+      "expected_output": "Correct routing explanation; only tracer executed for R1.",
+      "expectations": [
+        "FSM diagram routed to diagram-generator in the explanation",
+        "implementsReq routed to requirements-tracer",
+        "mixsets routed to mixset-builder",
+        "Actual generation for R1 includes req/implementsReq and not an unrelated mixset"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Use as many Umple features as reasonable in one small teaching model: class, association, state machine, enum, then validate.",
+      "expected_output": "Compact model using several features; validator/compile at end.",
+      "expectations": [
+        "The Umple source contains at least one class and one association",
+        "The Umple source contains a state machine or enum (or both)",
+        "Model stays relatively small (not hundreds of lines of noise)",
+        "A final compile/validate step is performed",
+        "One association per class pair; no Final state name"
+      ]
+    }
+  ]
+}

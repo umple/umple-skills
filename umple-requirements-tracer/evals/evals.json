@@ -1,0 +1,143 @@
+{
+  "skill_name": "umple-requirements-tracer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Turn these labelled requirements into an Umple model and tag every feature with implementsReq.\n\nreq R01 { A library member has a name. }\nreq R02 { A book has a title and an ISBN. }\nreq R03 { Members borrow many books and books are borrowed by many members. }",
+      "expected_output": "A compiling Umple model with the three req blocks preserved (or equivalent), classes Member and Book, a many-to-many association, and implementsReq tags that use R01, R02, and R03.",
+      "expectations": [
+        "The Umple source contains 'req R01', 'req R02', and 'req R03' definitions",
+        "The Umple source contains 'class Member' and 'class Book'",
+        "The Umple source contains at least one 'implementsReq R01' (or 'implementsReq R01,') tagging Member or its name attribute",
+        "The Umple source contains at least one 'implementsReq R02' tagging Book or its title/isbn attributes",
+        "The Umple source contains at least one 'implementsReq R03' tagging the Member–Book association or a class that owns it",
+        "Every implementsReq ID used also has a matching req definition",
+        "The association between Member and Book is defined only once",
+        "The API was called with language set to 'Java' and languageStyle set to 'codegen'",
+        "The API response does not contain 'umple-message-error'",
+        "The API response does not contain 'Cannot find specified requ'",
+        "A model.ump file was saved containing the Umple source code"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I already have this Umple file. Do not change the req blocks. Add implementsReq so the classes and association are traced.\n\nreq L01 { A loan records a borrow date. }\nreq L02 { A member has a name. }\nreq L03 { A member can have many loans. }\n\nclass Member { String name; }\nclass Loan { Date borrowDate; }\nassociation { 1 Member -- * Loan; }",
+      "expected_output": "The same req definitions plus classes, with implementsReq L01/L02/L03 placed immediately before the matching elements. The original req bodies are not rewritten into new IDs.",
+      "expectations": [
+        "The Umple source still contains 'req L01', 'req L02', and 'req L03' (IDs were not renamed)",
+        "The Umple source contains 'implementsReq' tags using L01, L02, and L03",
+        "implementsReq L02 is associated with class Member or the name attribute",
+        "implementsReq L01 is associated with class Loan or the borrowDate attribute",
+        "implementsReq L03 is associated with the Member–Loan association or the Member class",
+        "No new requirement IDs were invented beyond L01, L02, and L03",
+        "The API response does not contain 'umple-message-error'",
+        "The API response does not contain 'Cannot find specified requ'",
+        "A model.ump file was saved"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "These two requirements both apply to the same class. Combine them on one implementsReq line.\n\nreq R1 { An order has an order date. }\nreq R2 { An order has a status. }",
+      "expected_output": "A compiling Order class with orderDate and status, tagged with implementsReq R1, R2 on one line (or equivalent combined tag), not two identical full lists repeated on the class.",
+      "expectations": [
+        "The Umple source contains 'req R1' and 'req R2'",
+        "The Umple source contains 'class Order'",
+        "The Umple source tags Order (or its attributes) using both R1 and R2",
+        "When both requirements apply to the same element, they appear together as 'implementsReq R1, R2' (or R2, R1), not as two separate identical class-level lists",
+        "The API response does not contain 'umple-message-error'"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "From these labelled requirements, generate a class with a state machine. Tag the state machine (or its class), not each individual state.\n\nreq S01 { A door is either closed or open. }\nreq S02 { Detecting a person opens the door; a close event closes it. }",
+      "expected_output": "A compiling Door (or similar) class with a state machine Open/Closed and transitions, with implementsReq on the class or the sm block rather than on every state.",
+      "expectations": [
+        "The Umple source contains 'req S01' and 'req S02'",
+        "The Umple source contains a state machine with Open and Closed states (or equivalent names)",
+        "There is an event that transitions toward Open and an event that transitions toward Closed",
+        "implementsReq appears before the class or before the state-machine block",
+        "Individual states are not each prefixed with their own implementsReq",
+        "The state machine does not use 'Final' as a custom state name",
+        "The API response does not contain 'umple-message-error'"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Here is a large unlabelled requirements dump for a hospital. Generate an Umple domain model only. Do NOT add req blocks or implementsReq — there are no requirement IDs.\n\nThe hospital system manages patients, doctors, wards, and admissions. A hospital has a name and address and contains many wards. Each ward has a name and capacity. A doctor has a name and specialty and treats many patients. A patient has a name and date of birth. An admission records an admission date and links one patient to one ward. Doctors belong to the hospital. Over time the system should also track medications, insurance, billing, visiting hours, emergency intake, lab results, and staff rotas, all described in several pages of narrative without identifiers.",
+      "expected_output": "A compiling hospital domain model (Hospital, Ward, Doctor, Patient, Admission or similar) with NO implementsReq and no invented req ID scheme.",
+      "expectations": [
+        "The Umple source contains domain classes such as Hospital, Ward, Doctor, Patient (names may vary slightly)",
+        "The Umple source does NOT contain 'implementsReq'",
+        "The Umple source does NOT invent a large set of req IDs to cover every sentence of the dump",
+        "Each class pair has at most one association defined",
+        "The API was called with language set to 'Java' and languageStyle set to 'codegen'",
+        "The API response does not contain 'umple-message-error'",
+        "A model.ump file was saved"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "I have three short unlabelled bullets. Turn them into labelled Umple requirements and a tagged model.\n\n- A student has a name and student number\n- A course has a title and credits\n- Students enroll in many courses and courses have many students",
+      "expected_output": "req definitions with assigned IDs (e.g. R01–R03), Student and Course classes, a many-to-many association, and implementsReq mapping each bullet to the matching element.",
+      "expectations": [
+        "The Umple source contains at least three 'req ' definitions with identifiers",
+        "The Umple source contains 'class Student' and 'class Course'",
+        "The Umple source contains a many-to-many association between Student and Course",
+        "The Umple source contains 'implementsReq' tags that reference only the IDs defined in the req blocks",
+        "The API response does not contain 'umple-message-error'",
+        "The API response does not contain 'Cannot find specified requ'"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Generate a tagged model from:\n\nreq R10 { An author has a name. }\nreq R11 { A book has a title. }\n\nThen produce a Plain Requirements Doc so I can see which elements implement which reqs.",
+      "expected_output": "Compiling Umple with implementsReq, plus a PlainRequirementsDoc API call whose output lists R10 and R11 as IMPLEMENTED BY the corresponding classes or attributes.",
+      "expectations": [
+        "The Umple source contains 'req R10' and 'req R11' and 'implementsReq' tags for both",
+        "The Java/codegen API response does not contain 'umple-message-error'",
+        "The API was also called with language set to 'PlainRequirementsDoc'",
+        "The PlainRequirementsDoc response mentions R10 and R11",
+        "The PlainRequirementsDoc response contains 'IMPLEMENTED BY' for the tagged requirements",
+        "A model.ump file was saved"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Tag this model. The implementsReq line must sit immediately before the element, not at the bottom of the file.\n\nreq A01 { A library has a name. }\nclass Library { String name; }",
+      "expected_output": "implementsReq A01 immediately above class Library (or immediately above the name attribute), compiling without missing-requirement warnings.",
+      "expectations": [
+        "The Umple source contains 'implementsReq A01'",
+        "The implementsReq A01 line appears immediately before class Library or immediately before the name attribute",
+        "implementsReq is not placed only at the end of the file after the class body",
+        "The API response does not contain 'umple-message-error'",
+        "The API response does not contain 'Cannot find specified requ'"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Use only these IDs. Do not invent extra requirement IDs.\n\nreq P01 { A product has a name and a price. }",
+      "expected_output": "A Product class tagged with implementsReq P01 only. No P02/P03/etc.",
+      "expectations": [
+        "The Umple source contains 'req P01' and 'class Product'",
+        "The Umple source contains 'implementsReq P01'",
+        "The Umple source does not define req IDs other than P01",
+        "The Umple source does not contain implementsReq IDs other than P01",
+        "The API response does not contain 'Cannot find specified requ'",
+        "The API response does not contain 'umple-message-error'"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Compile this on purpose with a bad tag, then recover using the skill's retry loop: start from req R01 { A person has a name. } class Person { String name; } and an implementsReq R99 on the class. Fix it so the tag matches R01.",
+      "expected_output": "After retry, a compiling model where Person is tagged with implementsReq R01 (not R99). If retries are exhausted, the agent stops and shows the compiler warning instead of looping forever.",
+      "expectations": [
+        "The final Umple source contains 'req R01' and 'implementsReq R01'",
+        "The final Umple source does not tag Person with implementsReq R99",
+        "A missing-requirement warning was treated as a failure to fix, not ignored",
+        "The agent retried at most 3 times after a compiler error or missing-requirement warning",
+        "The final API response does not contain 'umple-message-error'",
+        "The final API response does not contain 'Cannot find specified requ'"
+      ]
+    }
+  ]
+}

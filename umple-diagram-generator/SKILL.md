@@ -1,6 +1,6 @@
 ---
 name: umple-diagram-generator
-description: "Generate diagrams (state machines, class diagrams, ER diagrams) from natural language requirements using Umple. Use when user requests: (1) State machine diagrams (2) UML class diagrams (3) ER diagrams, entity-relationship diagrams, or database schema diagrams (4) Diagram generation from text descriptions, (5) Any mention of Umple diagram generation, (6) Visual representation of states, transitions, events, entities, classes, or relationships. Outputs SVG diagrams with organized folder structure."
+description: "Generate diagrams (state machines, class diagrams, ER diagrams) from natural language using Umple. Use when the user requests: (1) State machine / state model / FSM / statechart / lifecycle diagrams (2) Class diagrams / data model / domain model / UML class model (3) ER diagrams, entity-relationship, or database schema diagrams (4) Trait diagrams (5) Any Umple diagram or visual model from text. Treat 'state model' as a state machine and 'data model' as a class or ER diagram. Outputs SVG plus model.ump."
 ---
 
 # Umple Diagram Generator
@@ -33,9 +33,8 @@ description: "Generate diagrams (state machines, class diagrams, ER diagrams) fr
 | `language`      | See table above                                                |
 | `languageStyle` | `diagramUpdate`                                                |
 | `umpleCode`     | The Umple source code                                          |
-| `filename`      | `model.ump`                                                    |
 
-Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.).
+Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.). Do **not** send a `filename` parameter: without it the server compiles in a fresh private directory. A bare name such as `model.ump` makes it work in a directory shared by every API user, which causes `Permission denied` (9200) errors and can return other users' generated files.
 
 ### Response parsing
 

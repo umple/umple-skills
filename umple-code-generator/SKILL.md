@@ -1,6 +1,6 @@
 ---
 name: umple-code-generator
-description: "Generate production-quality code (Java, Python, PHP, Ruby, C++, SQL) from Umple models. Use when user requests: (1) Code generation from UML/class models (2) Java/Python/PHP/Ruby/C++ class generation (3) SQL schema from a domain model (4) Boilerplate-free implementation of classes with associations and state machines (5) Converting a domain model to working code. Produces complete implementations with constructors, getters/setters, association management, and state machine logic."
+description: "Generate production-quality code from Umple or natural-language models. Use when the user requests: (1) Code generation from UML/class/Umple models (2) Java, Python, PHP, Ruby, C++, SQL, or JSON from a domain model (3) Converting Umple or a data model into working code (4) Boilerplate-free classes with associations and state machines. Produces constructors, getters/setters, association management, and state machine logic."
 ---
 
 # Umple Code Generator
@@ -15,6 +15,7 @@ description: "Generate production-quality code (Java, Python, PHP, Ruby, C++, SQ
 | Ruby     | `Ruby`           | Experimental                   |
 | C++      | `RTCpp`          | Real-time C++ with headers     |
 | SQL      | `Sql`            | CREATE TABLE DDL + foreign keys|
+| JSON     | `Json`           | Model as JSON                  |
 
 ## Workflow
 
@@ -36,15 +37,16 @@ description: "Generate production-quality code (Java, Python, PHP, Ruby, C++, SQ
 | `language`      | See table above      |
 | `languageStyle` | `codegen`            |
 | `umpleCode`     | The Umple source code|
-| `filename`      | `model.ump`          |
 
-Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.).
+Use whatever HTTP tool is available (WebFetch, curl, fetch, etc.). Do **not** send a `filename` parameter: without it the server compiles in a fresh private directory. A bare name such as `model.ump` makes it work in a directory shared by every API user, which causes `Permission denied` (9200) errors and can return other users' generated files.
 
 ### Response parsing
 
 **Success:** code appears after a `<p>URL_SPLIT` delimiter. Strip HTML tags and decode entities (`&lt;` → `<`, `&gt;` → `>`, `&amp;` → `&`, `&quot;` → `"`). Files separated by `//%% NEW FILE ClassName BEGINS HERE %%`.
 
 **Error:** response contains `<span class="umple-message-error">`. Strip HTML tags to read the error.
+
+**Server write error:** `Compiler Error (Generation)` with `Permission denied` / `(9200)`, or `Not able to open file`. This is a hosting problem, not a model bug: make sure no `filename` was sent and retry once. Do not change the model; if it persists, tell the user and offer local generation with `java -jar umple.jar -g Java model.ump`.
 
 ## Output
 
